@@ -1,129 +1,77 @@
 @import "tailwindcss";
 
 @theme inline {
-  /* Temporal Intelligence Palette */
-  --color-shell: #0B0C10;
-  --color-main: #11141A;
-  --color-panel: #161B22;
-  --color-elevated: #1C222A;
-  
-  /* Brand Accents */
-  --color-accent: #F2D58A;
-  --color-cyan: #6AD7FF;
-  --color-glow: rgba(242, 213, 138, 0.15);
-  --color-glow-cyan: rgba(106, 215, 255, 0.15);
-  
-  /* Text Colors */
-  --color-text-primary: #E8E5DE;
-  --color-text-secondary: #6B7280;
-  --color-text-muted: #4B5563;
-  
-  /* Border Colors */
-  --color-border: rgba(255, 255, 255, 0.06);
-  --color-border-muted: rgba(255, 255, 255, 0.04);
-  --color-border-hover: rgba(255, 255, 255, 0.1);
-  --color-border-glow: rgba(242, 213, 138, 0.3);
-  --color-border-cyan: rgba(106, 215, 255, 0.3);
-  
-  /* Surface Colors */
-  --color-surface-hover: rgba(255, 255, 255, 0.03);
-  --color-surface-active: rgba(255, 255, 255, 0.05);
-  
-  /* Status Colors */
-  --color-success: #4ADE80;
-  --color-success-bg: rgba(74, 222, 128, 0.1);
-  --color-urgency: #FF6B6B;
-  --color-urgency-bg: rgba(255, 107, 107, 0.1);
-  --color-amber: #F59E0B;
-  --color-amber-bg: rgba(245, 158, 11, 0.1);
-  
-  /* Semantic Tokens */
-  --color-background: var(--color-shell);
-  --color-foreground: var(--color-text-primary);
-  
-  /* Font Family */
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  
-  /* Border Radius */
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --radius-full: 9999px;
+  --color-background: #f6f1ea;
+  --color-surface: #fffcf7;
+  --color-border: #e7ded2;
+  --color-text-primary: #2b2b2b;
+  --color-text-secondary: #5a5148;
+  --color-text-muted: #8a8178;
+  --color-accent: #c46a4a;
+  --color-accent-hover: #b35d3f;
+  --color-sage: #7c9a8e;
+  --color-sage-bg: rgba(124, 154, 142, 0.12);
+  --color-blue: #6d85a3;
+  --color-blue-bg: rgba(109, 133, 163, 0.12);
+  --color-user-bubble: #f0e6d8;
+  --color-sand: #e7ded2;
+  --color-success: #5a8f72;
+  --color-success-bg: rgba(90, 143, 114, 0.12);
+  --color-amber: #b8860b;
+  --color-amber-bg: rgba(184, 134, 11, 0.12);
+  --color-surface-hover: rgba(43, 43, 43, 0.04);
+  --color-surface-active: rgba(43, 43, 43, 0.07);
+
+  --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-playfair), ui-serif, Georgia, serif;
+
+  --radius-card: 14px;
+  --radius-bubble: 16px;
+  --ease-warm: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @layer base {
   * {
     border-color: var(--color-border);
   }
-  
+
   body {
-    background-color: var(--color-shell);
+    background-color: var(--color-background);
     color: var(--color-text-primary);
     font-family: var(--font-sans);
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 1.6;
+    font-size: 15px;
+    line-height: 1.65;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
-  
-  h1, h2, h3, h4, h5, h6 {
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
     font-weight: 500;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.01em;
+    line-height: 1.3;
   }
 }
 
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
+  .shadow-soft {
+    box-shadow:
+      0 1px 2px rgba(43, 43, 43, 0.04),
+      0 8px 24px rgba(43, 43, 43, 0.06);
   }
-  
-  .text-pretty {
-    text-wrap: pretty;
+
+  .shadow-soft-lg {
+    box-shadow:
+      0 2px 4px rgba(43, 43, 43, 0.04),
+      0 16px 40px rgba(43, 43, 43, 0.08);
   }
-  
-  /* Glassmorphism effect */
-  .glass {
-    background: rgba(22, 27, 34, 0.7);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+
+  .rounded-card {
+    border-radius: var(--radius-card);
   }
-  
-  .glass-elevated {
-    background: rgba(28, 34, 42, 0.8);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 
-      0 0 0 1px rgba(255, 255, 255, 0.05) inset,
-      0 20px 40px -10px rgba(0, 0, 0, 0.5);
-  }
-  
-  /* Subtle glow effects */
-  .glow-accent {
-    box-shadow: 0 0 30px rgba(242, 213, 138, 0.15);
-  }
-  
-  .glow-cyan {
-    box-shadow: 0 0 30px rgba(106, 215, 255, 0.15);
-  }
-  
-  /* Radial gradient backgrounds */
-  .radial-accent {
-    background: radial-gradient(ellipse at center, rgba(242, 213, 138, 0.08) 0%, transparent 70%);
-  }
-  
-  .radial-cyan {
-    background: radial-gradient(ellipse at center, rgba(106, 215, 255, 0.06) 0%, transparent 70%);
-  }
-  
-  /* Smooth transitions */
-  .transition-smooth {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  
-  /* Chat message animations */
+
   @keyframes message-in {
     from {
       opacity: 0;
@@ -134,31 +82,47 @@
       transform: translateY(0);
     }
   }
-  
+
   .animate-message-in {
-    animation: message-in 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    animation: message-in 0.45s var(--ease-warm) forwards;
   }
-  
-  /* Typing indicator */
+
+  @keyframes drop-in {
+    from {
+      opacity: 0;
+      transform: translateY(-12px) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  .animate-drop-in {
+    animation: drop-in 0.5s var(--ease-warm) forwards;
+  }
+
   @keyframes pulse-dot {
-    0%, 60%, 100% {
-      opacity: 0.3;
+    0%,
+    60%,
+    100% {
+      opacity: 0.35;
       transform: scale(1);
     }
     30% {
       opacity: 1;
-      transform: scale(1.1);
+      transform: scale(1.15);
     }
   }
-  
+
   .animate-pulse-dot {
     animation: pulse-dot 1.4s ease-in-out infinite;
   }
-  
+
   .animate-pulse-dot-delay-1 {
     animation: pulse-dot 1.4s ease-in-out 0.2s infinite;
   }
-  
+
   .animate-pulse-dot-delay-2 {
     animation: pulse-dot 1.4s ease-in-out 0.4s infinite;
   }

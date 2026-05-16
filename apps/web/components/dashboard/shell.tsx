@@ -1,20 +1,14 @@
 import { Sidebar } from "./sidebar";
 import { Topbar } from "./topbar";
 
-interface DashboardShellProps {
-  children: React.ReactNode;
-}
-
-export function DashboardShell({ children }: DashboardShellProps) {
+export function DashboardShell({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen bg-main">
+    <div className="flex min-h-screen bg-background">
       <Sidebar />
-      <Topbar />
-      <main className="pl-[200px] pt-12">
-        <div className="p-6">
-          {children}
-        </div>
-      </main>
+      <div className="flex min-w-0 flex-1 flex-col">
+        <Topbar />
+        <main className="flex-1 overflow-auto p-6">{children}</main>
+      </div>
     </div>
   );
 }

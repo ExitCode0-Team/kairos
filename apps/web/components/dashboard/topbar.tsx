@@ -1,28 +1,25 @@
-"use client";
-
 import { Bell } from "lucide-react";
 import { Logo } from "@/components/logo";
 
 export function Topbar() {
   return (
-    <header className="fixed top-0 left-[200px] right-0 h-12 bg-shell border-b border-border flex items-center justify-between px-4 z-10">
-      <Logo showMark={true} />
-      
+    <header className="flex h-12 shrink-0 items-center justify-between border-b border-border/60 bg-surface/80 px-6">
+      <Logo showMark={false} className="md:hidden" />
+      <div className="hidden flex-1 md:block" />
       <div className="flex items-center gap-3">
-        {/* Agent Active Pill */}
-        <div className="flex items-center gap-2 px-3 py-1.5 rounded-[20px] bg-surface-hover border border-border-hover text-[12px]">
-          <span className="w-1.5 h-1.5 rounded-full bg-success animate-pulse" />
-          <span className="text-text-secondary">agent active</span>
-        </div>
-        
-        {/* Bell Icon */}
-        <button className="p-2 rounded-[6px] hover:bg-surface-hover transition-colors">
-          <Bell className="w-4 h-4 text-text-secondary" />
+        <span className="flex items-center gap-2 rounded-full border border-border bg-surface px-3 py-1 text-[12px] text-text-secondary shadow-soft">
+          <span className="h-1.5 w-1.5 rounded-full bg-sage" />
+          Agent active
+        </span>
+        <button
+          type="button"
+          className="flex h-9 w-9 items-center justify-center rounded-xl text-text-secondary transition-colors hover:bg-surface-hover hover:text-text-primary"
+          aria-label="Notifications"
+        >
+          <Bell className="h-4 w-4" />
         </button>
-        
-        {/* Avatar */}
-        <div className="w-8 h-8 rounded-full bg-panel border border-border flex items-center justify-center text-[12px] font-medium text-text-primary">
-          JD
+        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-accent/15 text-[12px] font-medium text-accent">
+          KP
         </div>
       </div>
     </header>

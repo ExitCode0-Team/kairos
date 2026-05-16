@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 
 function GoogleIcon() {
   return (
-    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+    <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
       <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
       <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
       <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
@@ -15,7 +15,7 @@ function GoogleIcon() {
 
 function AppleIcon() {
   return (
-    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+    <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
       <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" />
     </svg>
   );
@@ -23,7 +23,7 @@ function AppleIcon() {
 
 function MailIcon() {
   return (
-    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
       <rect width="20" height="16" x="2" y="4" rx="2" />
       <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
     </svg>
@@ -32,43 +32,38 @@ function MailIcon() {
 
 export default function AuthPage() {
   return (
-    <div className="min-h-screen bg-shell flex items-center justify-center p-4">
-      <div className="w-full max-w-[380px]">
-        {/* Card */}
-        <div className="bg-main border border-border rounded-[10px] p-8">
-          {/* Logo */}
-          <div className="flex flex-col items-center mb-8">
-            <Logo showMark={true} className="mb-4" markClassName="w-8 h-8" />
-            <p className="text-text-secondary text-[13px]">Sign in to continue</p>
+    <div className="flex min-h-screen items-center justify-center bg-background p-4">
+      <div className="w-full max-w-[400px]">
+        <div className="rounded-card bg-surface p-8 shadow-soft-lg">
+          <div className="mb-8 flex flex-col items-center">
+            <Logo showMark className="mb-4" markClassName="h-8 w-8" />
+            <p className="text-[14px] text-text-secondary">Sign in to continue</p>
           </div>
-          
-          {/* Auth Options */}
+
           <div className="space-y-3">
-            <Button variant="outline" className="w-full justify-center h-11" asChild>
+            <Button variant="outline" className="h-11 w-full justify-center" asChild>
               <Link href="/onboarding">
                 <GoogleIcon />
                 Continue with Google
               </Link>
             </Button>
-            
-            <Button variant="outline" className="w-full justify-center h-11" asChild>
+            <Button variant="outline" className="h-11 w-full justify-center" asChild>
               <Link href="/onboarding">
                 <AppleIcon />
                 Continue with Apple
               </Link>
             </Button>
-            
-            {/* Divider */}
+
             <div className="relative py-2">
               <div className="absolute inset-0 flex items-center">
                 <div className="w-full border-t border-border" />
               </div>
               <div className="relative flex justify-center">
-                <span className="bg-main px-3 text-[11px] text-text-secondary">or</span>
+                <span className="bg-surface px-3 text-[11px] text-text-muted">or</span>
               </div>
             </div>
-            
-            <Button variant="outline" className="w-full justify-center h-11" asChild>
+
+            <Button variant="outline" className="h-11 w-full justify-center" asChild>
               <Link href="/onboarding">
                 <MailIcon />
                 Continue with email
@@ -76,11 +71,10 @@ export default function AuthPage() {
             </Button>
           </div>
         </div>
-        
-        {/* Sign up link */}
-        <p className="text-center mt-6 text-[13px] text-text-secondary">
-          {"Don't have an account? "}
-          <Link href="/onboarding" className="text-text-primary hover:underline">
+
+        <p className="mt-6 text-center text-[13px] text-text-secondary">
+          Don&apos;t have an account?{" "}
+          <Link href="/onboarding" className="text-accent hover:text-accent-hover">
             Get started
           </Link>
         </p>
