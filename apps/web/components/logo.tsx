@@ -4,6 +4,7 @@ interface LogoProps {
   showMark?: boolean;
   className?: string;
   markClassName?: string;
+  inverted?: boolean;
 }
 
 export function HourglassMark({ className }: { className?: string }) {
@@ -11,7 +12,7 @@ export function HourglassMark({ className }: { className?: string }) {
     <svg
       viewBox="0 0 24 24"
       fill="none"
-      className={cn("w-5 h-5", className)}
+      className={cn("h-5 w-5", className)}
       aria-hidden="true"
     >
       <line x1="6" y1="4" x2="18" y2="4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
@@ -24,17 +25,35 @@ export function HourglassMark({ className }: { className?: string }) {
   );
 }
 
-export function Logo({ showMark = true, className, markClassName }: LogoProps) {
+export function Logo({ showMark = true, className, markClassName, inverted }: LogoProps) {
   return (
-    <div className={cn("flex items-center gap-2", className)}>
-      {showMark && <HourglassMark className={cn("text-accent", markClassName)} />}
-      <span className="font-display text-lg font-medium tracking-tight text-text-primary">
+    <div className={cn("flex items-center gap-2.5", className)}>
+      {showMark && (
+        <span
+          className={cn(
+            "flex h-10 w-10 items-center justify-center rounded-full shadow-none",
+            inverted ? "bg-white text-primary" : "bg-primary text-white"
+          )}
+        >
+          <HourglassMark className={markClassName} />
+        </span>
+      )}
+      <span
+        className={cn(
+          "text-lg font-bold tracking-tight",
+          inverted ? "text-white" : "text-foreground"
+        )}
+      >
         kairos.
       </span>
     </div>
   );
 }
 
-export function LogoMark({ className }: { className?: string }) {
-  return <HourglassMark className={cn("text-accent", className)} />;
+export function LogoMark({ className, inverted }: { className?: string; inverted?: boolean }) {
+  return (
+    <HourglassMark
+      className={cn(inverted ? "text-primary" : "text-white", className)}
+    />
+  );
 }

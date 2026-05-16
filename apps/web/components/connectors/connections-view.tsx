@@ -6,6 +6,14 @@ import { ArrowRight } from "lucide-react";
 import { ConnectorCard } from "@/components/connectors/connector-card";
 import { Button } from "@/components/ui/button";
 import { channels, comingSoonSources, dataSources } from "@/lib/connectors/data";
+import type { CardProps } from "@/components/ui/card";
+
+const DATA_TINTS: CardProps["variant"][] = [
+  "tint-blue",
+  "tint-emerald",
+  "tint-amber",
+  "tint-blue",
+];
 
 interface ConnectionsViewProps {
   continueHref?: string;
@@ -31,30 +39,32 @@ export function ConnectionsView({
   return (
     <div className="space-y-10">
       <section>
-        <h2 className="mb-5 text-[11px] font-medium uppercase tracking-[0.1em] text-text-muted">
+        <h2 className="mb-5 text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground">
           Data sources
         </h2>
         <div className="grid gap-4">
-          {dataSources.map((source) => (
+          {dataSources.map((source, index) => (
             <ConnectorCard
               key={source.id}
               icon={source.icon}
+              iconClass={source.iconClass}
               name={source.name}
               description={source.description}
               connected={connectedSources.includes(source.id)}
               loading={loadingSource === source.id}
               onConnect={() => handleConnect(source.id)}
               type="data"
+              tint={DATA_TINTS[index % DATA_TINTS.length]}
             />
           ))}
         </div>
       </section>
 
       <section>
-        <h2 className="mb-2 text-[11px] font-medium uppercase tracking-[0.1em] text-text-muted">
+        <h2 className="mb-2 text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground">
           Communication channel
         </h2>
-        <p className="mb-5 text-[13px] leading-relaxed text-text-secondary">
+        <p className="mb-5 text-[13px] leading-relaxed text-muted-foreground">
           Choose where Kairos reaches you. Job alerts, CV delivery, and weekly check-ins happen here.
         </p>
         <ChannelList activeChannel={activeChannel} onSelect={setActiveChannel} />
@@ -72,6 +82,14 @@ export function ConnectionsView({
   );
 }
 
+const CHANNEL_TINTS: CardProps["variant"][] = [
+  "tint-emerald",
+  "tint-blue",
+  "tint-amber",
+  "tint-blue",
+  "tint-emerald",
+];
+
 function ChannelList({
   activeChannel,
   onSelect,
@@ -81,15 +99,17 @@ function ChannelList({
 }) {
   return (
     <div className="grid gap-4">
-      {channels.map((channel) => (
+      {channels.map((channel, index) => (
         <ConnectorCard
           key={channel.id}
           icon={channel.icon}
+          iconClass={channel.iconClass}
           name={channel.name}
           description={channel.description}
           active={activeChannel === channel.id}
           onSelect={() => onSelect(channel.id)}
           type="channel"
+          tint={CHANNEL_TINTS[index % CHANNEL_TINTS.length]}
         />
       ))}
     </div>
@@ -99,18 +119,19 @@ function ChannelList({
 export function ConnectorsDashboardExtras() {
   return (
     <section className="mt-10">
-      <h2 className="mb-5 text-[11px] font-medium uppercase tracking-[0.1em] text-text-muted">
+      <h2 className="mb-5 text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground">
         Coming soon
       </h2>
       <div className="grid gap-4">
-        {comingSoonSources.map((source) => (
+        {comingSoonSources.map((source, index) => (
           <ConnectorCard
             key={source.id}
-            icon={<span className="text-lg">◇</span>}
+            icon={<span className="text-lg text-muted-foreground">◇</span>}
             name={source.name}
             description={source.description}
             comingSoon
             type="data"
+            tint={index % 2 === 0 ? "tint-amber" : "tint-blue"}
           />
         ))}
       </div>

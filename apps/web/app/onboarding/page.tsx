@@ -10,6 +10,7 @@ import {
 } from "@/components/onboarding/chat-bubble";
 import { ChatComposer } from "@/components/onboarding/chat-composer";
 import { ProfileSummary } from "@/components/onboarding/profile-summary";
+import { IconWell } from "@/components/ui/icon-well";
 import { useOnboardingChat } from "@/hooks/use-onboarding-chat";
 import type { ChatMessage } from "@/lib/onboarding/types";
 
@@ -22,12 +23,14 @@ export default function OnboardingPage() {
   }, [chat.messages, chat.isTyping, chat.showSummary]);
 
   return (
-    <div className="flex min-h-screen flex-col bg-background">
-      <header className="relative z-10 flex items-center justify-center py-6">
-        <Logo />
+    <div className="flex min-h-screen flex-col bg-muted">
+      <header className="relative z-10 bg-primary px-4 py-6">
+        <div className="mx-auto flex max-w-2xl justify-center">
+          <Logo inverted />
+        </div>
       </header>
 
-      <main className="relative z-10 flex-1 overflow-y-auto px-4 pb-36">
+      <main className="relative z-10 flex-1 overflow-y-auto bg-background px-4 pb-36">
         <div className="mx-auto max-w-2xl space-y-4 py-6">
           {chat.messages.map((message, index) => (
             <MessageRow
@@ -37,9 +40,7 @@ export default function OnboardingPage() {
             />
           ))}
 
-          {chat.isTyping && (
-            <TypingRow />
-          )}
+          {chat.isTyping && <TypingRow />}
 
           {chat.showSummary && (
             <ProfileSummary
@@ -54,7 +55,7 @@ export default function OnboardingPage() {
       </main>
 
       {chat.showInput && chat.currentMessage?.inputType && (
-        <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-t from-background via-background/95 to-transparent p-4">
+        <div className="fixed bottom-0 left-0 right-0 border-t border-border bg-background p-4">
           <div className="mx-auto max-w-2xl">
             <ChatComposer
               inputType={chat.currentMessage.inputType}
@@ -98,10 +99,10 @@ function MessageRow({
 function TypingRow() {
   return (
     <div className="flex items-start gap-3">
-      <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-surface shadow-soft">
+      <IconWell size="sm" className="mt-0.5 bg-muted">
         <LogoMark className="h-4 w-4" />
-      </div>
-      <div className="rounded-card rounded-tl-sm bg-surface shadow-soft">
+      </IconWell>
+      <div className="rounded-lg bg-muted">
         <TypingIndicator />
       </div>
     </div>

@@ -34,27 +34,34 @@ function NavItem({
     <Link
       href={href}
       className={cn(
-        "flex items-center gap-2 rounded-xl px-3 py-2 text-[13px] transition-colors",
+        "flex min-h-[44px] items-center gap-2 rounded-lg px-3 py-2.5 text-[13px] font-medium transition-colors duration-200",
         active
-          ? "bg-surface-active text-text-primary shadow-soft"
-          : "text-text-secondary hover:bg-surface-hover hover:text-text-primary"
+          ? "bg-primary text-white"
+          : "text-muted-foreground hover:bg-muted hover:text-foreground"
       )}
     >
       <span className="flex h-4 w-4 items-center justify-center">{icon}</span>
       <span className="flex-1">{label}</span>
       {badge !== undefined && (
-        <span className="rounded-md bg-surface px-1.5 py-0.5 text-[11px] text-text-muted">
+        <span
+          className={cn(
+            "rounded-md px-2 py-0.5 text-[11px] font-bold tabular-nums",
+            active ? "bg-white/20 text-white" : "bg-muted text-primary"
+          )}
+        >
           {badge}
         </span>
       )}
-      {hasActiveDot && <span className="h-1.5 w-1.5 rounded-full bg-sage" />}
+      {hasActiveDot && (
+        <span className="h-2 w-2 rounded-full bg-secondary" />
+      )}
     </Link>
   );
 }
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <div className="px-3 py-2 text-[10px] uppercase tracking-[0.08em] text-text-muted">
+    <div className="px-3 py-2 text-[10px] font-medium uppercase tracking-[0.08em] text-muted-foreground">
       {children}
     </div>
   );
@@ -64,10 +71,10 @@ export function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="flex w-[220px] shrink-0 flex-col border-r border-border/60 bg-surface/50 px-3 py-5">
+    <aside className="flex w-[220px] shrink-0 flex-col border-r border-border bg-background px-3 py-5">
       <Logo className="mb-8 px-2" />
 
-      <nav className="flex flex-1 flex-col gap-0.5">
+      <nav className="flex flex-1 flex-col gap-1">
         <NavItem
           href="/dashboard"
           icon={<LayoutDashboard className="h-4 w-4" />}

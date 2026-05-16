@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { ArrowRight, Check, X } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import type { InputType } from "@/lib/onboarding/types";
 import type { UserProfile } from "@/lib/onboarding/types";
 import { CVUploadZone } from "./cv-upload-zone";
@@ -68,7 +68,7 @@ function TextInput({
 
   return (
     <div className="space-y-2">
-      <div className="flex items-center gap-3 rounded-card bg-surface p-3 shadow-soft">
+      <div className="flex items-center gap-3 rounded-lg bg-muted p-3">
         <input
           ref={inputRef}
           type="text"
@@ -76,25 +76,23 @@ function TextInput({
           onChange={(e) => setValue(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && value.trim() && onSubmit(value.trim())}
           placeholder={field ? placeholders[field] : "Type your answer..."}
-          className="flex-1 bg-transparent text-[15px] text-text-primary placeholder:text-text-muted focus:outline-none"
+          className="flex-1 bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground focus:outline-none"
         />
-        <button
+        <Button
           type="button"
+          size="icon"
+          className="h-10 w-10 shrink-0"
           onClick={() => value.trim() && onSubmit(value.trim())}
           disabled={!value.trim()}
-          className="flex h-9 w-9 items-center justify-center rounded-full bg-accent text-surface transition-opacity hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-40"
+          aria-label="Send"
         >
           <ArrowRight className="h-4 w-4" />
-        </button>
+        </Button>
       </div>
       {optional && onSkip && (
-        <button
-          type="button"
-          onClick={onSkip}
-          className="rounded-full border border-border bg-surface px-4 py-2 text-[13px] text-text-secondary shadow-soft transition-colors hover:text-text-primary"
-        >
+        <Button type="button" variant="ghost" size="sm" onClick={onSkip} className="text-muted-foreground">
           Skip for now
-        </button>
+        </Button>
       )}
     </div>
   );
@@ -124,13 +122,13 @@ function TagsInput({ onSubmit }: { onSubmit: (tags: string[]) => void }) {
           {tags.map((tag) => (
             <span
               key={tag}
-              className="inline-flex items-center gap-1.5 rounded-full border border-border bg-surface px-3 py-1.5 text-[13px] text-text-secondary shadow-soft"
+              className="inline-flex items-center gap-1.5 rounded-md bg-background px-3 py-1.5 text-[13px] font-medium text-muted-foreground ring-1 ring-border"
             >
               {tag}
               <button
                 type="button"
                 onClick={() => setTags(tags.filter((t) => t !== tag))}
-                className="hover:text-text-primary"
+                className="text-muted-foreground hover:text-foreground"
               >
                 <X className="h-3 w-3" />
               </button>
@@ -138,7 +136,7 @@ function TagsInput({ onSubmit }: { onSubmit: (tags: string[]) => void }) {
           ))}
         </div>
       )}
-      <div className="flex items-center gap-3 rounded-card bg-surface p-3 shadow-soft">
+      <div className="flex items-center gap-3 rounded-lg bg-muted p-3">
         <input
           ref={inputRef}
           type="text"
@@ -151,20 +149,18 @@ function TagsInput({ onSubmit }: { onSubmit: (tags: string[]) => void }) {
             }
           }}
           placeholder="Type a skill and press Enter..."
-          className="flex-1 bg-transparent text-[15px] text-text-primary placeholder:text-text-muted focus:outline-none"
+          className="flex-1 bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground focus:outline-none"
         />
-        <button
+        <Button
           type="button"
+          size="sm"
           onClick={() => tags.length > 0 && onSubmit(tags)}
           disabled={tags.length === 0}
-          className={cn(
-            "flex h-9 items-center gap-2 rounded-full bg-accent px-4 text-[13px] font-medium text-surface",
-            "transition-opacity hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-40"
-          )}
+          className="shrink-0 gap-2"
         >
           Done
           <Check className="h-3.5 w-3.5" />
-        </button>
+        </Button>
       </div>
     </div>
   );

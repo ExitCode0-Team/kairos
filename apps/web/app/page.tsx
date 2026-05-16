@@ -1,84 +1,398 @@
 import Link from "next/link";
-import { Logo } from "@/components/logo";
+import {
+  ArrowRight,
+  Briefcase,
+  MessageCircle,
+  Sparkles,
+  Target,
+  Zap,
+} from "lucide-react";
+import { SiteHeader } from "@/components/marketing/site-header";
+import { Section } from "@/components/marketing/section";
+import { FlatDecor } from "@/components/marketing/flat-decor";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { IconWell } from "@/components/ui/icon-well";
 
-function GoogleIcon() {
+const stats = [
+  { label: "Jobs matched", value: "12k+", color: "text-primary" },
+  { label: "Avg. response rate", value: "3.2×", color: "text-secondary" },
+  { label: "Hours saved / week", value: "8+", color: "text-accent" },
+  { label: "Active users", value: "2.4k", color: "text-foreground" },
+];
+
+const features = [
+  {
+    icon: Target,
+    title: "Smart matching",
+    description: "Kairos scores every role against your profile and surfaces only what fits.",
+    tint: "tint-blue" as const,
+    iconColor: "text-primary",
+  },
+  {
+    icon: Zap,
+    title: "Instant applications",
+    description: "Tailored CVs and cover letters generated in seconds, not hours.",
+    tint: "tint-emerald" as const,
+    iconColor: "text-secondary",
+  },
+  {
+    icon: MessageCircle,
+    title: "Agent on your channel",
+    description: "WhatsApp, Slack, or email — your career agent meets you where you are.",
+    tint: "tint-amber" as const,
+    iconColor: "text-accent",
+  },
+];
+
+const steps = [
+  { num: "01", title: "Tell Kairos who you are", desc: "Chat onboarding or upload your CV." },
+  { num: "02", title: "Connect your sources", desc: "GitHub, Notion, Drive — keep your profile live." },
+  { num: "03", title: "Let the agent work", desc: "Matches, applies, and updates you in real time." },
+];
+
+const plans = [
+  {
+    name: "Starter",
+    price: "Free",
+    description: "Try Kairos with limited matches.",
+    features: ["5 matches / week", "Chat onboarding", "Email alerts"],
+    cta: "Get started",
+    popular: false,
+  },
+  {
+    name: "Pro",
+    price: "$29",
+    period: "/mo",
+    description: "Full agent for active job seekers.",
+    features: ["Unlimited matches", "CV tailoring", "WhatsApp agent", "Priority support"],
+    cta: "Start free trial",
+    popular: true,
+  },
+  {
+    name: "Team",
+    price: "$99",
+    period: "/mo",
+    description: "For cohorts and career coaches.",
+    features: ["Everything in Pro", "5 seats", "Shared pipeline", "Admin dashboard"],
+    cta: "Contact us",
+    popular: false,
+  },
+];
+
+const faqs = [
+  {
+    q: "How does Kairos find jobs?",
+    a: "We aggregate listings from major boards and company sites, then score each against your skills, experience, and preferences.",
+  },
+  {
+    q: "Can I control what gets applied?",
+    a: "Yes. You approve applications or set rules — auto-apply only above a match score you choose.",
+  },
+  {
+    q: "Which channels are supported?",
+    a: "WhatsApp, Telegram, Slack, Discord, and email. More coming soon.",
+  },
+];
+
+export default function LandingPage() {
   return (
-    <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-      <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
-      <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
-      <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
-      <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
-    </svg>
+    <div className="min-h-screen bg-background">
+      <HeroSection />
+      <StatsSection />
+      <FeaturesSection />
+      <BenefitsSection />
+      <HowItWorksSection />
+      <PricingSection />
+      <FaqSection />
+      <CtaSection />
+      <Footer />
+    </div>
   );
 }
 
-function AppleIcon() {
+function HeroSection() {
   return (
-    <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-      <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" />
-    </svg>
-  );
-}
-
-function MailIcon() {
-  return (
-    <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
-      <rect width="20" height="16" x="2" y="4" rx="2" />
-      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-    </svg>
-  );
-}
-
-export default function AuthPage() {
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-background p-4">
-      <div className="w-full max-w-[400px]">
-        <div className="rounded-card bg-surface p-8 shadow-soft-lg">
-          <div className="mb-8 flex flex-col items-center">
-            <Logo showMark className="mb-4" markClassName="h-8 w-8" />
-            <p className="text-[14px] text-text-secondary">Sign in to continue</p>
-          </div>
-
-          <div className="space-y-3">
-            <Button variant="outline" className="h-11 w-full justify-center" asChild>
-              <Link href="/onboarding">
-                <GoogleIcon />
-                Continue with Google
-              </Link>
-            </Button>
-            <Button variant="outline" className="h-11 w-full justify-center" asChild>
-              <Link href="/onboarding">
-                <AppleIcon />
-                Continue with Apple
-              </Link>
-            </Button>
-
-            <div className="relative py-2">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-border" />
-              </div>
-              <div className="relative flex justify-center">
-                <span className="bg-surface px-3 text-[11px] text-text-muted">or</span>
-              </div>
+    <div className="section-primary flat-decor relative">
+      <FlatDecor />
+      <SiteHeader inverted />
+      <div className="relative z-10 mx-auto max-w-7xl px-6 pb-24 pt-12 md:pb-32 md:pt-16">
+        <div className="grid items-center gap-12 lg:grid-cols-2">
+          <div>
+            <p className="mb-4 text-sm font-semibold uppercase tracking-wider text-white/80">
+              AI career agent
+            </p>
+            <h1 className="text-4xl font-extrabold leading-tight tracking-tight text-white md:text-6xl">
+              The right moment, applied.
+            </h1>
+            <p className="mt-6 max-w-lg text-lg text-white/80">
+              Kairos finds roles, tailors your applications, and keeps you in the loop — so you focus on interviews, not spreadsheets.
+            </p>
+            <div className="mt-10 flex flex-wrap gap-4">
+              <Button
+                size="lg"
+                className="bg-white text-primary hover:bg-white/90 hover:scale-105"
+                asChild
+              >
+                <Link href="/login">
+                  Sign in
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </Button>
+              <Button
+                variant="outline"
+                size="lg"
+                className="border-4 border-white text-white hover:bg-white hover:text-primary"
+                asChild
+              >
+                <Link href="/onboarding">Get started free</Link>
+              </Button>
             </div>
-
-            <Button variant="outline" className="h-11 w-full justify-center" asChild>
-              <Link href="/onboarding">
-                <MailIcon />
-                Continue with email
-              </Link>
-            </Button>
+          </div>
+          <div className="relative hidden h-80 lg:block" aria-hidden>
+            <HeroIllustrationBlocks />
           </div>
         </div>
-
-        <p className="mt-6 text-center text-[13px] text-text-secondary">
-          Don&apos;t have an account?{" "}
-          <Link href="/onboarding" className="text-accent hover:text-accent-hover">
-            Get started
-          </Link>
-        </p>
       </div>
     </div>
+  );
+}
+
+function HeroIllustrationBlocks() {
+  return (
+    <>
+      <div className="absolute right-0 top-0 h-48 w-48 rounded-lg bg-white/20" />
+      <div className="absolute bottom-8 left-8 h-32 w-32 rounded-lg bg-white/15" />
+      <div className="absolute right-12 top-16 h-24 w-24 rotate-12 rounded-full bg-white/10" />
+      <div className="absolute left-1/2 top-1/2 flex h-40 w-40 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-lg bg-white">
+        <Sparkles className="h-16 w-16 text-primary" strokeWidth={2} />
+      </div>
+    </>
+  );
+}
+
+function StatsSection() {
+  return (
+    <Section variant="default" className="py-12">
+      <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
+        {stats.map((s) => (
+          <div key={s.label} className="text-center">
+            <p className={`text-3xl font-extrabold tracking-tight md:text-4xl ${s.color}`}>
+              {s.value}
+            </p>
+            <p className="mt-1 text-sm font-medium uppercase tracking-wider text-muted-foreground">
+              {s.label}
+            </p>
+          </div>
+        ))}
+      </div>
+    </Section>
+  );
+}
+
+function FeaturesSection() {
+  return (
+    <Section variant="muted" id="features">
+      <div className="mb-12 text-center">
+        <h2 className="text-3xl font-extrabold tracking-tight md:text-4xl">
+          Built for momentum
+        </h2>
+        <p className="mx-auto mt-4 max-w-2xl text-muted-foreground">
+          Everything you need to run a modern job search — without the busywork.
+        </p>
+      </div>
+      <div className="grid gap-6 md:grid-cols-3">
+        {features.map((f) => (
+          <Card key={f.title} variant={f.tint} interactive className="p-8">
+            <IconWell iconClassName={f.iconColor}>
+              <f.icon className="h-6 w-6" strokeWidth={2.5} />
+            </IconWell>
+            <h3 className="mt-6 text-lg font-bold">{f.title}</h3>
+            <p className="mt-2 text-sm text-muted-foreground">{f.description}</p>
+          </Card>
+        ))}
+      </div>
+    </Section>
+  );
+}
+
+function BenefitsSection() {
+  return (
+    <Section variant="secondary">
+      <div className="grid items-center gap-12 lg:grid-cols-2">
+        <BenefitsText />
+        <BenefitsVisual />
+      </div>
+    </Section>
+  );
+}
+
+function BenefitsText() {
+  return (
+    <div>
+      <h2 className="text-3xl font-extrabold tracking-tight text-white md:text-4xl">
+        Your profile stays sharp
+      </h2>
+      <p className="mt-4 text-lg text-white/80">
+        Connect GitHub, Notion, and Drive. Kairos keeps your skills and projects current so every application reflects the real you.
+      </p>
+      <ul className="mt-8 space-y-4">
+        {["Auto-sync from connected sources", "Match scores you can trust", "One agent, every channel"].map(
+          (item) => (
+            <li key={item} className="flex items-center gap-3 text-white">
+              <span className="flex h-8 w-8 items-center justify-center rounded-md bg-white/20 text-sm font-bold">
+                ✓
+              </span>
+              {item}
+            </li>
+          )
+        )}
+      </ul>
+    </div>
+  );
+}
+
+function BenefitsVisual() {
+  return (
+    <div className="relative h-64" aria-hidden>
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="h-40 w-full max-w-sm rounded-lg bg-white/20" />
+      </div>
+      <Briefcase className="absolute left-1/4 top-1/2 h-12 w-12 -translate-y-1/2 text-white" strokeWidth={2} />
+    </div>
+  );
+}
+
+function HowItWorksSection() {
+  return (
+    <Section variant="dark" id="how-it-works">
+      <div className="mb-12 text-center">
+        <h2 className="text-3xl font-extrabold tracking-tight text-white md:text-4xl">
+          How it works
+        </h2>
+      </div>
+      <div className="grid gap-6 md:grid-cols-3">
+        {steps.map((step) => (
+          <div key={step.num} className="rounded-lg bg-white/10 p-8">
+            <span className="text-4xl font-extrabold text-white/40">{step.num}</span>
+            <h3 className="mt-4 text-lg font-bold text-white">{step.title}</h3>
+            <p className="mt-2 text-sm text-white/70">{step.desc}</p>
+          </div>
+        ))}
+      </div>
+    </Section>
+  );
+}
+
+function PricingSection() {
+  return (
+    <Section variant="default" id="pricing">
+      <div className="mb-12 text-center">
+        <h2 className="text-3xl font-extrabold tracking-tight md:text-4xl">Simple pricing</h2>
+        <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
+          Start free. Upgrade when you&apos;re ready to go all in.
+        </p>
+      </div>
+      <div className="grid items-end gap-6 md:grid-cols-3">
+        {plans.map((plan) => (
+          <div
+            key={plan.name}
+            className={
+              plan.popular
+                ? "scale-105 rounded-lg bg-primary p-8 text-white transition-all duration-200 hover:scale-[1.02]"
+                : "rounded-lg bg-muted p-8 transition-all duration-200 hover:scale-[1.02]"
+            }
+          >
+            {plan.popular && (
+              <span className="mb-4 inline-block rounded-md bg-white/20 px-2 py-0.5 text-xs font-semibold uppercase tracking-wider">
+                Popular
+              </span>
+            )}
+            <h3 className="text-lg font-bold">{plan.name}</h3>
+            <p className="mt-2 text-sm opacity-80">{plan.description}</p>
+            <p className="mt-4 text-4xl font-extrabold">
+              {plan.price}
+              {plan.period && <span className="text-lg font-medium opacity-70">{plan.period}</span>}
+            </p>
+            <ul className="mt-6 space-y-2 text-sm">
+              {plan.features.map((f) => (
+                <li key={f}>• {f}</li>
+              ))}
+            </ul>
+            <Button
+              variant={plan.popular ? "secondary" : "outline"}
+              className={`mt-8 w-full ${plan.popular ? "bg-white text-primary hover:bg-white/90" : ""}`}
+              asChild
+            >
+              <Link href="/onboarding">{plan.cta}</Link>
+            </Button>
+          </div>
+        ))}
+      </div>
+    </Section>
+  );
+}
+
+function FaqSection() {
+  return (
+    <Section variant="muted" id="faq">
+      <div className="mb-12 text-center">
+        <h2 className="text-3xl font-extrabold tracking-tight md:text-4xl">FAQ</h2>
+      </div>
+      <div className="mx-auto max-w-2xl divide-y-2 divide-border overflow-hidden rounded-lg border-2 border-border">
+        {faqs.map((faq) => (
+          <details key={faq.q} className="group bg-background px-6 py-4">
+            <summary className="cursor-pointer list-none font-semibold">{faq.q}</summary>
+            <p className="mt-2 text-sm text-muted-foreground">{faq.a}</p>
+          </details>
+        ))}
+      </div>
+    </Section>
+  );
+}
+
+function CtaSection() {
+  return (
+    <Section variant="accent">
+      <div className="text-center">
+        <h2 className="text-3xl font-extrabold tracking-tight text-white md:text-4xl">
+          Ready to apply at the right moment?
+        </h2>
+        <p className="mx-auto mt-4 max-w-xl text-lg text-white/90">
+          Join thousands of job seekers using Kairos to move faster.
+        </p>
+        <div className="mt-10 flex flex-wrap justify-center gap-4">
+          <Button size="lg" className="bg-white text-accent hover:bg-white/90" asChild>
+            <Link href="/onboarding">Get started free</Link>
+          </Button>
+          <Button
+            variant="outline"
+            size="lg"
+            className="border-4 border-white text-white hover:bg-white hover:text-accent"
+            asChild
+          >
+            <Link href="/login">Sign in</Link>
+          </Button>
+        </div>
+      </div>
+    </Section>
+  );
+}
+
+function Footer() {
+  return (
+    <footer className="section-dark py-12">
+      <div className="mx-auto max-w-7xl px-6">
+        <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
+          <p className="text-sm text-white/60">© {new Date().getFullYear()} Kairos. All rights reserved.</p>
+          <nav className="flex flex-wrap gap-6 text-sm text-white/80">
+            <Link href="/login" className="hover:text-white">Sign in</Link>
+            <Link href="/onboarding" className="hover:text-white">Get started</Link>
+            <Link href="/dashboard" className="hover:text-white">Dashboard</Link>
+            <Link href="/connectors" className="hover:text-white">Connectors</Link>
+          </nav>
+        </div>
+      </div>
+    </footer>
   );
 }

@@ -28,7 +28,7 @@ export function CVUploadZone({ onUpload, onSkip }: CVUploadZoneProps) {
       <button
         type="button"
         onClick={onSkip}
-        className="w-full text-center text-[13px] text-text-secondary transition-colors hover:text-text-primary"
+        className="w-full text-center text-[13px] text-muted-foreground transition-colors hover:text-foreground"
       >
         Skip — I&apos;ll answer the questions instead
       </button>
@@ -50,10 +50,8 @@ function DropZone({
   return (
     <div
       className={cn(
-        "cursor-pointer rounded-card border-2 border-dashed p-8 text-center transition-all duration-300",
-        isDragging
-          ? "border-accent bg-accent/5 shadow-soft"
-          : "border-border bg-surface/80 hover:border-accent/40 hover:shadow-soft"
+        "cursor-pointer rounded-lg border-2 border-dashed border-border bg-background p-8 text-center transition-colors duration-200",
+        isDragging && "border-primary bg-blue-50"
       )}
       onDragOver={(e) => {
         e.preventDefault();
@@ -83,11 +81,11 @@ function DropZone({
           if (file) onFile(file);
         }}
       />
-      <Upload className="mx-auto mb-4 h-10 w-10 text-text-secondary" />
-      <p className="mb-1 text-[15px] text-text-primary">
-        Drop your CV here or <span className="text-accent">browse</span>
+      <Upload className="mx-auto mb-4 h-10 w-10 text-primary" />
+      <p className="mb-1 text-[15px] text-foreground">
+        Drop your CV here or <span className="font-medium text-primary">browse</span>
       </p>
-      <p className="text-[13px] text-text-muted">PDF, DOC, or DOCX</p>
+      <p className="text-[13px] text-muted-foreground">PDF, DOC, or DOCX</p>
     </div>
   );
 }
