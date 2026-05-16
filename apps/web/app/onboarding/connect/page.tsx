@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
-import { ArrowRight, Check } from "lucide-react";
-import { Logo } from "@/components/logo";
+import { useRouter } from "next/navigation";
+import { ArrowRight, Check, Loader2 } from "lucide-react";
+import { LogoMark } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -13,6 +13,7 @@ interface ConnectorCardProps {
   description: string;
   connected?: boolean;
   active?: boolean;
+  loading?: boolean;
   onConnect?: () => void;
   onSelect?: () => void;
   type: "data" | "channel";
@@ -99,6 +100,7 @@ function ConnectorCard({
   description,
   connected,
   active,
+  loading,
   onConnect,
   onSelect,
   type,
@@ -107,40 +109,72 @@ function ConnectorCard({
 
   return (
     <div
-      className={cn(
-        "p-4 rounded-[10px] border bg-panel transition-colors",
-        active ? "border-accent" : "border-border",
-        isChannel && "cursor-pointer hover:border-border-hover"
-      )}
       onClick={isChannel ? onSelect : undefined}
+      className={cn(
+        "group relative p-5 rounded-2xl border transition-all duration-300 cursor-pointer",
+        active
+          ? "border-accent/50 bg-accent/5 shadow-[0_0_30px_rgba(242,213,138,0.1)]"
+          : connected
+          ? "border-cyan/30 bg-cyan/5"
+          : "border-border-hover bg-panel/50 hover:border-border-glow hover:bg-panel"
+      )}
     >
-      <div className="flex items-start justify-between gap-4">
-        <div className="flex items-start gap-3">
-          <div className="w-10 h-10 rounded-[8px] bg-main border border-border flex items-center justify-center text-text-primary shrink-0">
+      {/* Glow effect for active */}
+      {active && (
+        <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-accent/10 to-transparent pointer-events-none" />
+      )}
+
+      <div className="relative flex items-start justify-between gap-4">
+        <div className="flex items-start gap-4">
+          <div
+            className={cn(
+              "w-12 h-12 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300",
+              active
+                ? "bg-accent/20 text-accent"
+                : connected
+                ? "bg-cyan/20 text-cyan"
+                : "bg-main border border-border-hover text-text-secondary group-hover:text-text-primary"
+            )}
+          >
             {icon}
           </div>
           <div>
-            <div className="flex items-center gap-2">
-              <span className="text-[14px] font-medium text-text-primary">{name}</span>
-              {connected && (
-                <span className="flex items-center gap-1 text-[11px] text-success">
-                  <span className="w-1.5 h-1.5 rounded-full bg-success" />
+            <div className="flex items-center gap-2.5">
+              <span className="text-[15px] font-medium text-text-primary">{name}</span>
+              {connected && !isChannel && (
+                <span className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-cyan/10 border border-cyan/20 text-[11px] text-cyan">
+                  <span className="w-1.5 h-1.5 rounded-full bg-cyan animate-pulse" />
                   Connected
                 </span>
               )}
               {active && isChannel && (
-                <span className="flex items-center gap-1 text-[11px] text-accent">
+                <span className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-accent/10 border border-accent/20 text-[11px] text-accent">
                   <Check className="w-3 h-3" />
-                  Active
+                  Selected
                 </span>
               )}
             </div>
-            <p className="text-[12px] text-text-secondary mt-0.5">{description}</p>
+            <p className="text-[13px] text-text-secondary mt-1 leading-relaxed">
+              {description}
+            </p>
           </div>
         </div>
         {!isChannel && !connected && (
-          <Button variant="outline" size="sm" onClick={onConnect}>
-            Connect
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={(e) => {
+              e.stopPropagation();
+              onConnect?.();
+            }}
+            disabled={loading}
+            className="shrink-0"
+          >
+            {loading ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : (
+              "Connect"
+            )}
           </Button>
         )}
       </div>
@@ -209,33 +243,52 @@ const channels = [
 ];
 
 export default function ConnectPage() {
+  const router = useRouter();
   const [connectedSources, setConnectedSources] = useState<string[]>([]);
+  const [loadingSource, setLoadingSource] = useState<string | null>(null);
   const [activeChannel, setActiveChannel] = useState<string>("whatsapp");
 
-  const handleConnect = (sourceId: string) => {
+  const handleConnect = async (sourceId: string) => {
+    setLoadingSource(sourceId);
+    // Simulate connection
+    await new Promise((resolve) => setTimeout(resolve, 1500));
     setConnectedSources([...connectedSources, sourceId]);
+    setLoadingSource(null);
+  };
+
+  const handleContinue = () => {
+    router.push("/dashboard");
   };
 
   return (
     <div className="min-h-screen bg-shell">
-      <div className="max-w-3xl mx-auto px-6 py-12">
+      {/* Background effects */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-0 right-1/4 w-[600px] h-[600px] radial-accent opacity-20" />
+        <div className="absolute bottom-1/4 left-0 w-[500px] h-[500px] radial-cyan opacity-15" />
+      </div>
+
+      <div className="relative z-10 max-w-3xl mx-auto px-6 py-12">
         {/* Header */}
-        <div className="mb-10">
-          <Logo showMark={true} className="mb-6" />
-          <h1 className="text-[20px] font-medium text-text-primary mb-2">
-            Connect your sources.
+        <div className="mb-12">
+          <div className="flex items-center gap-2 mb-8">
+            <LogoMark className="w-6 h-6" />
+            <span className="text-lg font-medium tracking-tight text-text-primary">kairos.</span>
+          </div>
+          <h1 className="text-[28px] font-medium text-text-primary mb-3 tracking-tight">
+            Connect your world.
           </h1>
-          <p className="text-[14px] text-text-secondary">
-            Kairos gets smarter the more it knows about you.
+          <p className="text-[16px] text-text-secondary leading-relaxed max-w-lg">
+            Kairos gets smarter the more it knows. Connect your data sources and choose how you want to stay in touch.
           </p>
         </div>
 
         {/* Data Sources */}
-        <section className="mb-10">
-          <h2 className="text-[10px] uppercase tracking-[0.08em] text-text-secondary mb-4">
-            Data sources
+        <section className="mb-12">
+          <h2 className="text-[11px] uppercase tracking-[0.1em] text-text-muted mb-5 font-medium">
+            Data Sources
           </h2>
-          <div className="grid gap-3">
+          <div className="grid gap-4">
             {dataSources.map((source) => (
               <ConnectorCard
                 key={source.id}
@@ -243,6 +296,7 @@ export default function ConnectPage() {
                 name={source.name}
                 description={source.description}
                 connected={connectedSources.includes(source.id)}
+                loading={loadingSource === source.id}
                 onConnect={() => handleConnect(source.id)}
                 type="data"
               />
@@ -251,14 +305,14 @@ export default function ConnectPage() {
         </section>
 
         {/* Communication Channel */}
-        <section className="mb-10">
-          <h2 className="text-[10px] uppercase tracking-[0.08em] text-text-secondary mb-2">
-            Communication channel
+        <section className="mb-12">
+          <h2 className="text-[11px] uppercase tracking-[0.1em] text-text-muted mb-2 font-medium">
+            Communication Channel
           </h2>
-          <p className="text-[12px] text-text-secondary mb-4">
+          <p className="text-[13px] text-text-secondary mb-5 leading-relaxed">
             Choose where Kairos reaches you. Job alerts, CV delivery, and weekly check-ins happen here.
           </p>
-          <div className="grid gap-3">
+          <div className="grid gap-4">
             {channels.map((channel) => (
               <ConnectorCard
                 key={channel.id}
@@ -275,11 +329,9 @@ export default function ConnectPage() {
 
         {/* CTA */}
         <div className="flex justify-end">
-          <Button asChild className="gap-2">
-            <Link href="/dashboard">
-              Continue to dashboard
-              <ArrowRight className="w-4 h-4" />
-            </Link>
+          <Button onClick={handleContinue} size="lg" className="gap-2 glow-accent">
+            Continue to dashboard
+            <ArrowRight className="w-4 h-4" />
           </Button>
         </div>
       </div>
