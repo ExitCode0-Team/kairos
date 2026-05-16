@@ -13,7 +13,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
-import { GlassCard } from "@/components/ui/glass-card";
 import { IconWell } from "@/components/ui/icon-well";
 import { PageHeader } from "@/components/ui/page-header";
 import { cn } from "@/lib/utils";
@@ -43,7 +42,7 @@ function StatCard({
   const valueColor = STAT_VALUE_COLORS[accentIndex % STAT_VALUE_COLORS.length];
 
   return (
-    <Card variant="glass" className="p-4">
+    <Card variant="muted" className="p-4">
       <IconWell size="sm" className="mb-3 bg-muted">
         <Icon className="h-4 w-4 text-primary" />
       </IconWell>
@@ -91,8 +90,8 @@ function Panel({
   children: React.ReactNode;
 }) {
   return (
-    <GlassCard tier={3} padding="none">
-      <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
+    <Card variant="default" padding="none">
+      <div className="flex items-center justify-between border-b border-border px-4 py-3">
         <h3 className="text-[14px] font-medium text-foreground">{title}</h3>
         {action && (
           <button
@@ -104,7 +103,7 @@ function Panel({
         )}
       </div>
       <div className="p-4">{children}</div>
-    </GlassCard>
+    </Card>
   );
 }
 
@@ -259,7 +258,7 @@ function ChatBubble({
       className={cn(
         "max-w-[95%] rounded-lg px-3 py-2 text-[12px] leading-relaxed",
         align === "left"
-          ? "glass-2 text-muted-foreground"
+          ? "bg-muted text-muted-foreground"
           : "ml-auto bg-primary/20 text-foreground"
       )}
     >

@@ -1,14 +1,49 @@
 import Link from "next/link";
-import { ArrowRight, BarChart3, Target, Zap } from "lucide-react";
+import {
+  ArrowRight,
+  Briefcase,
+  MessageCircle,
+  Sparkles,
+  Target,
+  Zap,
+} from "lucide-react";
 import { SiteHeader } from "@/components/marketing/site-header";
 import { Section } from "@/components/marketing/section";
-import { HeroCareerMock } from "@/components/marketing/hero-career-mock";
-import { TrustBadges } from "@/components/marketing/trust-badges";
-import { LogoTicker } from "@/components/marketing/logo-ticker";
-import { LiquidWave } from "@/components/marketing/liquid-wave";
+import { FlatDecor } from "@/components/marketing/flat-decor";
 import { Button } from "@/components/ui/button";
-import { GlassCard } from "@/components/ui/glass-card";
-import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
+import { IconWell } from "@/components/ui/icon-well";
+
+const stats = [
+  { label: "Jobs matched", value: "12k+", color: "text-primary" },
+  { label: "Avg. response rate", value: "3.2×", color: "text-secondary" },
+  { label: "Hours saved / week", value: "8+", color: "text-accent" },
+  { label: "Active users", value: "2.4k", color: "text-foreground" },
+];
+
+const features = [
+  {
+    icon: Target,
+    title: "Smart matching",
+    description: "Kairos scores every role against your profile and surfaces only what fits.",
+    tint: "tint-blue" as const,
+    iconColor: "text-primary",
+  },
+  {
+    icon: Zap,
+    title: "Instant applications",
+    description: "Tailored CVs and cover letters generated in seconds, not hours.",
+    tint: "tint-emerald" as const,
+    iconColor: "text-secondary",
+  },
+  {
+    icon: MessageCircle,
+    title: "Agent on your channel",
+    description: "WhatsApp, Slack, or email — your career agent meets you where you are.",
+    tint: "tint-amber" as const,
+    iconColor: "text-accent",
+  },
+];
 
 const steps = [
   { num: "01", title: "Tell Kairos who you are", desc: "Chat onboarding or upload your CV." },
@@ -62,13 +97,12 @@ const faqs = [
 
 export default function LandingPage() {
   return (
-    <div className="void-bg min-h-screen">
+    <div className="min-h-screen bg-background">
       <HeroSection />
-      <LiquidWave />
-      <TrustBadgesSection />
-      <ProductProofSection />
+      <StatsSection />
+      <FeaturesSection />
+      <BenefitsSection />
       <HowItWorksSection />
-      <LogoTicker />
       <PricingSection />
       <FaqSection />
       <CtaSection />
@@ -79,30 +113,44 @@ export default function LandingPage() {
 
 function HeroSection() {
   return (
-    <div className="liquid-hero relative">
-      <SiteHeader />
-      <div className="relative z-10 mx-auto max-w-7xl px-6 pb-16 pt-8 md:pb-20 md:pt-12">
-        <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr]">
+    <div className="section-primary flat-decor relative">
+      <FlatDecor />
+      <SiteHeader inverted />
+      <div className="relative z-10 mx-auto max-w-7xl px-6 pb-24 pt-12 md:pb-32 md:pt-16">
+        <div className="grid items-center gap-12 lg:grid-cols-2">
           <div>
-            <p className="text-label-ai mb-4">Career intelligence</p>
-            <h1 className="text-hero">The right moment, applied.</h1>
-            <p className="mt-6 max-w-lg text-lg text-muted-foreground">
-              Match scores, tailored CVs, and applications on your channel — timed for when roles are actually open.
+            <p className="mb-4 text-sm font-semibold uppercase tracking-wider text-white/80">
+              AI career agent
+            </p>
+            <h1 className="text-4xl font-extrabold leading-tight tracking-tight text-white md:text-6xl">
+              The right moment, applied.
+            </h1>
+            <p className="mt-6 max-w-lg text-lg text-white/80">
+              Kairos finds roles, tailors your applications, and keeps you in the loop — so you focus on interviews, not spreadsheets.
             </p>
             <div className="mt-10 flex flex-wrap gap-4">
-              <Button size="lg" asChild>
-                <Link href="/onboarding">
-                  Start chatting free
+              <Button
+                size="lg"
+                className="bg-white text-primary hover:bg-white/90 hover:scale-105"
+                asChild
+              >
+                <Link href="/login">
+                  Sign in
                   <ArrowRight className="h-4 w-4" />
                 </Link>
               </Button>
-              <Button variant="outline" size="lg" asChild>
-                <Link href="/dashboard">Open dashboard</Link>
+              <Button
+                variant="outline"
+                size="lg"
+                className="border-4 border-white text-white hover:bg-white hover:text-primary"
+                asChild
+              >
+                <Link href="/onboarding">Get started free</Link>
               </Button>
             </div>
           </div>
-          <div className="flex justify-center lg:justify-end">
-            <HeroCareerMock />
+          <div className="relative hidden h-80 lg:block" aria-hidden>
+            <HeroIllustrationBlocks />
           </div>
         </div>
       </div>
@@ -110,75 +158,126 @@ function HeroSection() {
   );
 }
 
-function TrustBadgesSection() {
+function HeroIllustrationBlocks() {
   return (
-    <Section variant="default" className="py-10">
-      <TrustBadges />
+    <>
+      <div className="absolute right-0 top-0 h-48 w-48 rounded-lg bg-white/20" />
+      <div className="absolute bottom-8 left-8 h-32 w-32 rounded-lg bg-white/15" />
+      <div className="absolute right-12 top-16 h-24 w-24 rotate-12 rounded-full bg-white/10" />
+      <div className="absolute left-1/2 top-1/2 flex h-40 w-40 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-lg bg-white">
+        <Sparkles className="h-16 w-16 text-primary" strokeWidth={2} />
+      </div>
+    </>
+  );
+}
+
+function StatsSection() {
+  return (
+    <Section variant="default" className="py-12">
+      <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
+        {stats.map((s) => (
+          <div key={s.label} className="text-center">
+            <p className={`text-3xl font-extrabold tracking-tight md:text-4xl ${s.color}`}>
+              {s.value}
+            </p>
+            <p className="mt-1 text-sm font-medium uppercase tracking-wider text-muted-foreground">
+              {s.label}
+            </p>
+          </div>
+        ))}
+      </div>
     </Section>
   );
 }
 
-function ProductProofSection() {
+function FeaturesSection() {
   return (
-    <Section variant="surface" id="features">
+    <Section variant="muted" id="features">
       <div className="mb-12 text-center">
-        <h2 className="text-h1">Apply with context</h2>
+        <h2 className="text-3xl font-extrabold tracking-tight md:text-4xl">
+          Built for momentum
+        </h2>
         <p className="mx-auto mt-4 max-w-2xl text-muted-foreground">
-          Scoring, recommendations, and pipeline — the same surfaces you use in the app.
+          Everything you need to run a modern job search — without the busywork.
         </p>
       </div>
       <div className="grid gap-6 md:grid-cols-3">
-        <GlassCard tier={3} signal="blue" padding="lg">
-          <Target className="mb-4 h-6 w-6 text-primary" strokeWidth={2} />
-          <h3 className="text-lg font-semibold">Match score</h3>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Every role scored against your live profile — gaps surfaced before you apply.
-          </p>
-          <p className="mt-4 text-3xl font-bold text-primary">94%</p>
-          <p className="text-caption">Stripe · Senior Frontend</p>
-        </GlassCard>
-        <GlassCard tier={3} signal="green" padding="lg">
-          <Zap className="mb-4 h-6 w-6 text-secondary" strokeWidth={2} />
-          <h3 className="text-lg font-semibold">Job recommendation</h3>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Proactive alerts when a role crosses your threshold — act on WhatsApp or web.
-          </p>
-          <Badge variant="proactive" className="mt-4">
-            Apply now
-          </Badge>
-        </GlassCard>
-        <GlassCard tier={3} padding="lg">
-          <BarChart3 className="mb-4 h-6 w-6 text-foreground" strokeWidth={2} />
-          <h3 className="text-lg font-semibold">Pipeline</h3>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Track applications, interviews, and response rate in one calm view.
-          </p>
-          <p className="mt-4 text-3xl font-bold text-foreground">32%</p>
-          <p className="text-caption">Response rate this month</p>
-        </GlassCard>
+        {features.map((f) => (
+          <Card key={f.title} variant={f.tint} interactive className="p-8">
+            <IconWell iconClassName={f.iconColor}>
+              <f.icon className="h-6 w-6" strokeWidth={2.5} />
+            </IconWell>
+            <h3 className="mt-6 text-lg font-bold">{f.title}</h3>
+            <p className="mt-2 text-sm text-muted-foreground">{f.description}</p>
+          </Card>
+        ))}
       </div>
     </Section>
+  );
+}
+
+function BenefitsSection() {
+  return (
+    <Section variant="secondary">
+      <div className="grid items-center gap-12 lg:grid-cols-2">
+        <BenefitsText />
+        <BenefitsVisual />
+      </div>
+    </Section>
+  );
+}
+
+function BenefitsText() {
+  return (
+    <div>
+      <h2 className="text-3xl font-extrabold tracking-tight text-white md:text-4xl">
+        Your profile stays sharp
+      </h2>
+      <p className="mt-4 text-lg text-white/80">
+        Connect GitHub, Notion, and Drive. Kairos keeps your skills and projects current so every application reflects the real you.
+      </p>
+      <ul className="mt-8 space-y-4">
+        {["Auto-sync from connected sources", "Match scores you can trust", "One agent, every channel"].map(
+          (item) => (
+            <li key={item} className="flex items-center gap-3 text-white">
+              <span className="flex h-8 w-8 items-center justify-center rounded-md bg-white/20 text-sm font-bold">
+                ✓
+              </span>
+              {item}
+            </li>
+          )
+        )}
+      </ul>
+    </div>
+  );
+}
+
+function BenefitsVisual() {
+  return (
+    <div className="relative h-64" aria-hidden>
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="h-40 w-full max-w-sm rounded-lg bg-white/20" />
+      </div>
+      <Briefcase className="absolute left-1/4 top-1/2 h-12 w-12 -translate-y-1/2 text-white" strokeWidth={2} />
+    </div>
   );
 }
 
 function HowItWorksSection() {
   return (
-    <Section variant="default" id="how-it-works" className="relative">
-      <div className="mb-12 grid items-end gap-8 lg:grid-cols-2">
-        <div>
-          <h2 className="text-h1">How it works</h2>
-          <p className="mt-4 max-w-md text-muted-foreground">
-            Three steps from profile to applications — no busywork in between.
-          </p>
-        </div>
+    <Section variant="dark" id="how-it-works">
+      <div className="mb-12 text-center">
+        <h2 className="text-3xl font-extrabold tracking-tight text-white md:text-4xl">
+          How it works
+        </h2>
       </div>
       <div className="grid gap-6 md:grid-cols-3">
         {steps.map((step) => (
-          <GlassCard key={step.num} tier={2} padding="lg">
-            <span className="text-label">{step.num}</span>
-            <h3 className="mt-4 text-lg font-semibold">{step.title}</h3>
-            <p className="mt-2 text-sm text-muted-foreground">{step.desc}</p>
-          </GlassCard>
+          <div key={step.num} className="rounded-lg bg-white/10 p-8">
+            <span className="text-4xl font-extrabold text-white/40">{step.num}</span>
+            <h3 className="mt-4 text-lg font-bold text-white">{step.title}</h3>
+            <p className="mt-2 text-sm text-white/70">{step.desc}</p>
+          </div>
         ))}
       </div>
     </Section>
@@ -187,43 +286,47 @@ function HowItWorksSection() {
 
 function PricingSection() {
   return (
-    <Section variant="surface" id="pricing">
+    <Section variant="default" id="pricing">
       <div className="mb-12 text-center">
-        <h2 className="text-h1">Simple pricing</h2>
+        <h2 className="text-3xl font-extrabold tracking-tight md:text-4xl">Simple pricing</h2>
         <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
           Start free. Upgrade when you&apos;re ready to go all in.
         </p>
       </div>
       <div className="grid items-end gap-6 md:grid-cols-3">
         {plans.map((plan) => (
-          <GlassCard
+          <div
             key={plan.name}
-            tier={3}
-            padding="lg"
-            className={plan.popular ? "scale-[1.02] ring-1 ring-secondary/40" : ""}
+            className={
+              plan.popular
+                ? "scale-105 rounded-lg bg-primary p-8 text-white transition-all duration-200 hover:scale-[1.02]"
+                : "rounded-lg bg-muted p-8 transition-all duration-200 hover:scale-[1.02]"
+            }
           >
             {plan.popular && (
-              <Badge variant="proactive" className="mb-4">
+              <span className="mb-4 inline-block rounded-md bg-white/20 px-2 py-0.5 text-xs font-semibold uppercase tracking-wider">
                 Popular
-              </Badge>
+              </span>
             )}
-            <h3 className="text-lg font-semibold">{plan.name}</h3>
-            <p className="mt-2 text-sm text-muted-foreground">{plan.description}</p>
-            <p className="mt-4 text-4xl font-bold">
+            <h3 className="text-lg font-bold">{plan.name}</h3>
+            <p className="mt-2 text-sm opacity-80">{plan.description}</p>
+            <p className="mt-4 text-4xl font-extrabold">
               {plan.price}
-              {plan.period && (
-                <span className="text-lg font-medium text-muted-foreground">{plan.period}</span>
-              )}
+              {plan.period && <span className="text-lg font-medium opacity-70">{plan.period}</span>}
             </p>
-            <ul className="mt-6 space-y-2 text-sm text-muted-foreground">
+            <ul className="mt-6 space-y-2 text-sm">
               {plan.features.map((f) => (
                 <li key={f}>• {f}</li>
               ))}
             </ul>
-            <Button variant={plan.popular ? "success" : "outline"} className="mt-8 w-full" asChild>
+            <Button
+              variant={plan.popular ? "secondary" : "outline"}
+              className={`mt-8 w-full ${plan.popular ? "bg-white text-primary hover:bg-white/90" : ""}`}
+              asChild
+            >
               <Link href="/onboarding">{plan.cta}</Link>
             </Button>
-          </GlassCard>
+          </div>
         ))}
       </div>
     </Section>
@@ -232,13 +335,13 @@ function PricingSection() {
 
 function FaqSection() {
   return (
-    <Section variant="default" id="faq">
+    <Section variant="muted" id="faq">
       <div className="mb-12 text-center">
-        <h2 className="text-h1">FAQ</h2>
+        <h2 className="text-3xl font-extrabold tracking-tight md:text-4xl">FAQ</h2>
       </div>
-      <div className="mx-auto max-w-2xl divide-y divide-white/10 overflow-hidden rounded-xl border border-white/10">
+      <div className="mx-auto max-w-2xl divide-y-2 divide-border overflow-hidden rounded-lg border-2 border-border">
         {faqs.map((faq) => (
-          <details key={faq.q} className="group bg-surface px-6 py-4">
+          <details key={faq.q} className="group bg-background px-6 py-4">
             <summary className="cursor-pointer list-none font-semibold">{faq.q}</summary>
             <p className="mt-2 text-sm text-muted-foreground">{faq.a}</p>
           </details>
@@ -250,47 +353,43 @@ function FaqSection() {
 
 function CtaSection() {
   return (
-    <Section variant="default" className="relative py-24">
-      <div className="signal-glow-blue -left-20 top-1/2 -translate-y-1/2" />
-      <GlassCard tier={3} padding="lg" className="relative mx-auto max-w-2xl text-center">
-        <h2 className="text-h1">Ready to apply at the right moment?</h2>
-        <p className="mx-auto mt-4 max-w-lg text-muted-foreground">
-          Connect your profile, set your match threshold, and let Kairos handle the rest.
+    <Section variant="accent">
+      <div className="text-center">
+        <h2 className="text-3xl font-extrabold tracking-tight text-white md:text-4xl">
+          Ready to apply at the right moment?
+        </h2>
+        <p className="mx-auto mt-4 max-w-xl text-lg text-white/90">
+          Join thousands of job seekers using Kairos to move faster.
         </p>
         <div className="mt-10 flex flex-wrap justify-center gap-4">
-          <Button size="lg" asChild>
-            <Link href="/onboarding">Start chatting free</Link>
+          <Button size="lg" className="bg-white text-accent hover:bg-white/90" asChild>
+            <Link href="/onboarding">Get started free</Link>
           </Button>
-          <Button variant="outline" size="lg" asChild>
+          <Button
+            variant="outline"
+            size="lg"
+            className="border-4 border-white text-white hover:bg-white hover:text-accent"
+            asChild
+          >
             <Link href="/login">Sign in</Link>
           </Button>
         </div>
-      </GlassCard>
+      </div>
     </Section>
   );
 }
 
 function Footer() {
   return (
-    <footer className="section-surface border-t border-white/10 py-12">
+    <footer className="section-dark py-12">
       <div className="mx-auto max-w-7xl px-6">
         <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
-          <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} Kairos. All rights reserved.
-          </p>
-          <nav className="flex flex-wrap gap-6 text-sm text-muted-foreground">
-            <Link href="/login" className="hover:text-foreground">
-              Sign in
-            </Link>
-            <Link href="/onboarding" className="text-secondary hover:text-secondary-hover">
-              Get started
-            </Link>
-            <Link href="/dashboard" className="hover:text-foreground">
-              Dashboard
-            </Link>
-            <Link href="/connectors" className="hover:text-foreground">
-              Connectors
-            </Link>
+          <p className="text-sm text-white/60">© {new Date().getFullYear()} Kairos. All rights reserved.</p>
+          <nav className="flex flex-wrap gap-6 text-sm text-white/80">
+            <Link href="/login" className="hover:text-white">Sign in</Link>
+            <Link href="/onboarding" className="hover:text-white">Get started</Link>
+            <Link href="/dashboard" className="hover:text-white">Dashboard</Link>
+            <Link href="/connectors" className="hover:text-white">Connectors</Link>
           </nav>
         </div>
       </div>

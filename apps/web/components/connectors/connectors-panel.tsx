@@ -8,7 +8,7 @@ import { IconCloud } from "./icon-cloud";
 import { ConnectorRow } from "./connector-row";
 import { Button } from "@/components/ui/button";
 import { SearchInput } from "@/components/ui/search-input";
-import { GlassPanel } from "@/components/ui/glass-panel";
+import { Card } from "@/components/ui/card";
 import { channels, comingSoonSources, dataSources } from "@/lib/connectors/data";
 
 interface ConnectorsPanelProps {
@@ -57,7 +57,7 @@ export function ConnectorsPanel({
   }, [search]);
 
   return (
-    <GlassPanel padding="none" className="mx-auto w-full max-w-4xl overflow-hidden">
+    <Card padding="none" className="mx-auto w-full max-w-4xl overflow-hidden">
       <div className="flex items-center justify-between border-b border-border px-6 py-4">
         <h1 className="text-h2">Connectors</h1>
         <div className="flex items-center gap-3">
@@ -162,7 +162,7 @@ export function ConnectorsPanel({
           <ContinueFooter continueHref={continueHref} router={router} />
         )}
       </div>
-    </GlassPanel>
+    </Card>
   );
 }
 

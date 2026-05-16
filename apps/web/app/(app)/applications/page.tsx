@@ -1,7 +1,7 @@
 import { PageHeader } from "@/components/ui/page-header";
 import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { GlassCard } from "@/components/ui/glass-card";
 
 const applications = [
   { company: "Figma", role: "Senior Engineer", score: 91, status: "interview" as const },
@@ -25,11 +25,8 @@ const statusLabel = {
 export default function ApplicationsPage() {
   return (
     <>
-      <PageHeader
-        title="Applications"
-        description="Track every role you've applied to."
-      />
-      <GlassCard tier={3} padding="none" className="overflow-hidden">
+      <PageHeader title="Applications" description="Track every role you\'ve applied to." />
+      <Card variant="default" padding="none" className="overflow-hidden">
         <Table>
           <TableHeader>
             <TableRow>
@@ -54,7 +51,7 @@ export default function ApplicationsPage() {
             ))}
           </TableBody>
         </Table>
-      </GlassCard>
+      </Card>
     </>
   );
 }

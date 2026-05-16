@@ -38,7 +38,7 @@ export function ConnectorRow({
     <div
       onClick={isChannel && !comingSoon ? onSelect : undefined}
       className={cn(
-        "glass-2 flex items-center gap-4 p-4 transition-all duration-200",
+        "flex items-center gap-4 p-4 transition-all duration-200",
         !comingSoon && isChannel && "cursor-pointer hover:border-white/20",
         active && "border-primary/40 ring-1 ring-primary/30",
         comingSoon && "opacity-60"

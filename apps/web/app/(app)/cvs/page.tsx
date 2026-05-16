@@ -26,7 +26,7 @@ export default function CvsPage() {
       />
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {cvs.map((cv) => (
-          <Card key={cv.name} variant="glass" interactive className="p-5">
+          <Card key={cv.name} variant="muted" interactive className="p-5">
             <IconWell size="sm" iconClassName="text-primary">
               <FileText className="h-5 w-5" />
             </IconWell>

@@ -38,7 +38,7 @@ export function MatchesClient({ initialMatches }: { initialMatches: Match[] }) {
       />
       <div className="space-y-3">
         {initialMatches.map((job) => (
-          <Card key={job.company} variant="glass" className="flex items-center gap-4 p-4">
+          <Card key={job.company} variant="muted" className="flex items-center gap-4 p-4">
             <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md bg-primary/15 font-bold text-primary">
               {job.company[0]}
             </div>

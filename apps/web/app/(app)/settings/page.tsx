@@ -1,5 +1,5 @@
 import { PageHeader } from "@/components/ui/page-header";
-import { GlassCard } from "@/components/ui/glass-card";
+import { Card } from "@/components/ui/card";
 import { SectionShell } from "@/components/ui/section-shell";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
@@ -9,7 +9,7 @@ export default function SettingsPage() {
   return (
     <>
       <PageHeader title="Settings" description="Manage your account and preferences." />
-      <GlassCard tier={3} padding="lg" className="mx-auto max-w-2xl space-y-8">
+      <Card className="mx-auto max-w-2xl space-y-8 p-8">
         <SectionShell title="Profile" description="How you appear in Kairos.">
           <div className="space-y-4">
             <div>
@@ -33,7 +33,7 @@ export default function SettingsPage() {
           </div>
         </SectionShell>
         <Button>Save changes</Button>
-      </GlassCard>
+      </Card>
     </>
   );
 }
