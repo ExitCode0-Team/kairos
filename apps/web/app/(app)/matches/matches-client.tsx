@@ -8,30 +8,27 @@ import { Tabs } from "@/components/ui/tabs";
 import { Select } from "@/components/ui/select";
 import { Pagination } from "@/components/ui/pagination";
 import { JobPreferencesEditor } from "@/components/preferences/job-preferences-editor";
-import { MatchCard, type MatchCardData } from "@/components/matches/match-card";
-
-type Match = MatchCardData & { postedToday?: boolean };
+import { MatchCard } from "@/components/matches/match-card";
+import type { Match } from "@/lib/api/types";
 
 type SortOption = "best" | "newest" | "score";
 
 const PAGE_SIZE = 4;
 
-function parseTimeToHours(time: string): number {
-  if (time.endsWith("h ago")) return parseInt(time, 10) || 0;
-  if (time.endsWith("d ago")) return (parseInt(time, 10) || 0) * 24;
-  if (time.endsWith("w ago")) return (parseInt(time, 10) || 0) * 24 * 7;
-  return 999;
-}
-
 function sortMatches(matches: Match[], sort: SortOption): Match[] {
   const copy = [...matches];
-  if (sort === "score") {
-    return copy.sort((a, b) => b.score - a.score);
-  }
-  if (sort === "newest") {
-    return copy.sort((a, b) => parseTimeToHours(a.time) - parseTimeToHours(b.time));
-  }
+  if (sort === "score") return copy.sort((a, b) => b.score - a.score);
+  if (sort === "newest")
+    return copy.sort(
+      (a, b) => Date.parse(b.postedAt) - Date.parse(a.postedAt),
+    );
   return copy.sort((a, b) => b.score - a.score);
+}
+
+function isPostedToday(iso: string): boolean {
+  const t = Date.parse(iso);
+  if (Number.isNaN(t)) return false;
+  return Date.now() - t < 24 * 3600 * 1000;
 }
 
 export function MatchesClient({ initialMatches }: { initialMatches: Match[] }) {
@@ -44,7 +41,7 @@ export function MatchesClient({ initialMatches }: { initialMatches: Match[] }) {
     if (tab === "high") {
       list = list.filter((m) => m.score >= 80);
     } else if (tab === "new") {
-      list = list.filter((m) => m.postedToday);
+      list = list.filter((m) => isPostedToday(m.postedAt));
     }
     return sortMatches(list, sort);
   }, [initialMatches, tab, sort]);

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ArrowRight, Check, X } from "lucide-react";
+import { ArrowRight, Check, RefreshCw, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { InputType } from "@/lib/onboarding/types";
 import type { UserProfile } from "@/lib/onboarding/types";
@@ -12,9 +12,10 @@ interface ChatComposerProps {
   field?: keyof UserProfile;
   optional?: boolean;
   onSubmit: (value: string | string[], field?: keyof UserProfile) => void;
-  onSkipExperience?: () => void;
+  onSkipStep?: () => void;
   onCVUpload: (file: File) => void;
   onSkipCV: () => void;
+  onRetry?: () => void;
 }
 
 export function ChatComposer({
@@ -22,23 +23,45 @@ export function ChatComposer({
   field,
   optional,
   onSubmit,
-  onSkipExperience,
+  onSkipStep,
   onCVUpload,
   onSkipCV,
+  onRetry,
 }: ChatComposerProps) {
   if (inputType === "cv-upload") {
     return <CVUploadZone onUpload={onCVUpload} onSkip={onSkipCV} />;
   }
+  if (inputType === "retry") {
+    return <RetryButton onRetry={onRetry ?? (() => {})} />;
+  }
   if (inputType === "tags") {
-    return <TagsInput onSubmit={(tags) => onSubmit(tags, field)} />;
+    return (
+      <TagsInput
+        field={field}
+        optional={optional}
+        onSubmit={(tags) => onSubmit(tags, field)}
+        onSkip={optional ? onSkipStep : undefined}
+      />
+    );
   }
   return (
     <TextInput
       field={field}
       optional={optional}
       onSubmit={(value) => onSubmit(value, field)}
-      onSkip={field === "experience" ? onSkipExperience : undefined}
+      onSkip={optional ? onSkipStep : undefined}
     />
+  );
+}
+
+function RetryButton({ onRetry }: { onRetry: () => void }) {
+  return (
+    <div className="flex justify-end">
+      <Button type="button" onClick={onRetry} className="gap-2">
+        <RefreshCw className="h-4 w-4" />
+        Try again
+      </Button>
+    </div>
   );
 }
 
@@ -98,7 +121,17 @@ function TextInput({
   );
 }
 
-function TagsInput({ onSubmit }: { onSubmit: (tags: string[]) => void }) {
+function TagsInput({
+  field,
+  optional,
+  onSubmit,
+  onSkip,
+}: {
+  field?: keyof UserProfile;
+  optional?: boolean;
+  onSubmit: (tags: string[]) => void;
+  onSkip?: () => void;
+}) {
   const [tags, setTags] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
@@ -113,6 +146,12 @@ function TagsInput({ onSubmit }: { onSubmit: (tags: string[]) => void }) {
       setTags([...tags, trimmed]);
       setInputValue("");
     }
+  };
+
+  const placeholders: Partial<Record<keyof UserProfile, string>> = {
+    skills: "Type a skill and press Enter...",
+    projects: "Type a project name and press Enter...",
+    references: "Type a name (e.g. Sam Lee, Engineering Manager)...",
   };
 
   return (
@@ -148,7 +187,9 @@ function TagsInput({ onSubmit }: { onSubmit: (tags: string[]) => void }) {
               addTag();
             }
           }}
-          placeholder="Type a skill and press Enter..."
+          placeholder={
+            (field && placeholders[field]) ?? "Type a value and press Enter..."
+          }
           className="flex-1 bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground focus:outline-none"
         />
         <Button
@@ -162,6 +203,17 @@ function TagsInput({ onSubmit }: { onSubmit: (tags: string[]) => void }) {
           <Check className="h-3.5 w-3.5" />
         </Button>
       </div>
+      {optional && onSkip && (
+        <Button
+          type="button"
+          variant="ghost"
+          size="sm"
+          onClick={onSkip}
+          className="text-muted-foreground"
+        >
+          Skip for now
+        </Button>
+      )}
     </div>
   );
 }

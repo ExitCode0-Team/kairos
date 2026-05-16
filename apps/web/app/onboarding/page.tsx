@@ -55,16 +55,17 @@ export default function OnboardingPage() {
       </main>
 
       {chat.showInput && chat.currentMessage?.inputType && (
-        <div className="fixed bottom-0 left-0 right-0 p-4">
+        <div className="fixed bottom-0 left-0 right-0 z-20 p-4">
           <div className="mx-auto max-w-2xl rounded-[16px] border border-border bg-[var(--bg-elevated)] p-4 shadow-elevated">
             <ChatComposer
               inputType={chat.currentMessage.inputType}
               field={chat.currentMessage.field}
               optional={chat.currentStep?.optional}
               onSubmit={chat.handleAnswer}
-              onSkipExperience={chat.handleSkipExperience}
+              onSkipStep={chat.handleSkipStep}
               onCVUpload={chat.handleCVUpload}
               onSkipCV={chat.handleSkipCV}
+              onRetry={chat.handleRetrySubmit}
             />
           </div>
         </div>
@@ -82,7 +83,9 @@ function MessageRow({
 }) {
   const isTags =
     message.type === "user" &&
-    prev?.field === "skills" &&
+    (prev?.field === "skills" ||
+      prev?.field === "projects" ||
+      prev?.field === "references") &&
     message.content.includes(",");
 
   if (message.type === "ai") {

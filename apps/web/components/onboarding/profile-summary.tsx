@@ -16,7 +16,15 @@ const FIELDS: { key: keyof UserProfile; label: string }[] = [
   { key: "role", label: "Role" },
   { key: "skills", label: "Skills" },
   { key: "experience", label: "Experience" },
+  { key: "projects", label: "Projects" },
+  { key: "references", label: "References" },
 ];
+
+function fieldValue(userData: UserProfile, key: keyof UserProfile): string {
+  const v = userData[key];
+  if (Array.isArray(v)) return v.length > 0 ? v.join(", ") : "—";
+  return v?.toString().trim() || "—";
+}
 
 export function ProfileSummary({ userData, onConfirm, onEdit }: ProfileSummaryProps) {
   return (
@@ -30,11 +38,7 @@ export function ProfileSummary({ userData, onConfirm, onEdit }: ProfileSummaryPr
             <ProfileField
               key={key}
               label={label}
-              value={
-                key === "skills"
-                  ? userData.skills.join(", ") || "—"
-                  : (userData[key] as string) || "—"
-              }
+              value={fieldValue(userData, key)}
               onEdit={() => onEdit(key)}
             />
           ))}

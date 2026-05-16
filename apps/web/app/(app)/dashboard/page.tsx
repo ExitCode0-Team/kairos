@@ -2,10 +2,14 @@ import {
   FileText,
   GitBranch,
   ArrowRight,
+  Bookmark,
+  Send,
+  Sparkles,
   Target,
   TrendingDown,
   TrendingUp,
 } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
@@ -19,7 +23,18 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { getDashboardSummary } from "@/lib/api/resources";
+import { formatRelativeTime } from "@/lib/matches/format-time";
+import type { Activity, ActivityIconKey, Match } from "@/lib/api/types";
 import { cn } from "@/lib/utils";
+
+const ACTIVITY_ICONS: Record<ActivityIconKey, LucideIcon> = {
+  match: Target,
+  apply: Send,
+  save: Bookmark,
+  cv: FileText,
+  agent: GitBranch,
+};
 
 function DashboardZone({
   children,
@@ -35,6 +50,12 @@ function DashboardZone({
       {children}
     </section>
   );
+}
+
+function formatDelta(value: number | undefined, suffix?: string): string | undefined {
+  if (value === undefined || value === 0) return undefined;
+  const sign = value > 0 ? "+" : "";
+  return `${sign}${value}${suffix ?? ""}`;
 }
 
 function StatCard({
@@ -58,7 +79,7 @@ function StatCard({
       <div
         className={cn(
           "mt-2 text-4xl font-extrabold leading-none tracking-tight tabular-nums sm:text-[2.75rem]",
-          highlight ? "text-primary" : "text-foreground"
+          highlight ? "text-primary" : "text-foreground",
         )}
       >
         {value}
@@ -73,7 +94,7 @@ function StatDelta({ delta, positive }: { delta: string; positive?: boolean }) {
     <div
       className={cn(
         "mt-2 flex items-center gap-1 text-[12px]",
-        positive ? "text-[var(--success)]" : "text-[var(--danger)]"
+        positive ? "text-[var(--success)]" : "text-[var(--danger)]",
       )}
     >
       {positive ? (
@@ -115,20 +136,10 @@ function Panel({
   );
 }
 
-const jobMatches = [
-  { company: "Stripe", initial: "S", role: "Senior Frontend Engineer", location: "San Francisco", time: "2h ago", score: 94 },
-  { company: "Linear", initial: "L", role: "Staff Engineer, Platform", location: "Remote", time: "4h ago", score: 89 },
-  { company: "Vercel", initial: "V", role: "Software Engineer, DX", location: "Remote", time: "6h ago", score: 86 },
-  { company: "Notion", initial: "N", role: "Frontend Engineer", location: "New York", time: "1d ago", score: 78 },
-];
+export default async function DashboardPage() {
+  const summary = await getDashboardSummary();
+  const { stats, recentMatches, activities } = summary;
 
-const activities = [
-  { icon: FileText, label: "CV generated for Stripe", time: "2m ago" },
-  { icon: Target, label: "New high match: OpenAI", time: "1h ago" },
-  { icon: GitBranch, label: "GitHub synced successfully", time: "3h ago" },
-];
-
-export default function DashboardPage() {
   return (
     <div className="space-y-8">
       <section className="section-primary relative overflow-hidden rounded-[20px] px-6 py-8">
@@ -147,10 +158,31 @@ export default function DashboardPage() {
           <DashboardZone className="border-b-0 pb-0">
             <div className="rounded-[16px] border border-white/10 bg-white/5 p-4 backdrop-blur-sm">
               <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-                <StatCard label="Matches today" value={jobMatches.length} delta="+1 since morning" positive />
-                <StatCard label="New this week" value={12} delta="+4 vs last week" positive />
-                <StatCard label="Avg match score" value={84} delta="+4 pts" positive highlight />
-                <StatCard label="Saved roles" value={7} delta="+2 saved" positive />
+                <StatCard
+                  label="Matches today"
+                  value={stats.matchesToday}
+                  delta={formatDelta(stats.deltas.matchesToday, " since morning")}
+                  positive={(stats.deltas.matchesToday ?? 0) >= 0}
+                />
+                <StatCard
+                  label="New this week"
+                  value={stats.newThisWeek}
+                  delta={formatDelta(stats.deltas.newThisWeek, " vs last week")}
+                  positive={(stats.deltas.newThisWeek ?? 0) >= 0}
+                />
+                <StatCard
+                  label="Avg match score"
+                  value={stats.avgMatchScore}
+                  delta={formatDelta(stats.deltas.avgMatchScore, " pts")}
+                  positive={(stats.deltas.avgMatchScore ?? 0) >= 0}
+                  highlight
+                />
+                <StatCard
+                  label="Saved roles"
+                  value={stats.savedRoles}
+                  delta={formatDelta(stats.deltas.savedRoles, " saved")}
+                  positive={(stats.deltas.savedRoles ?? 0) >= 0}
+                />
               </div>
             </div>
           </DashboardZone>
@@ -160,12 +192,12 @@ export default function DashboardPage() {
       <div className="grid gap-8 lg:grid-cols-[1fr_300px] lg:divide-x lg:divide-border">
         <div className="space-y-6 lg:pr-8">
           <Panel title="Top matches today" action="View all" flushBody>
-            <JobMatchesTable />
+            <JobMatchesTable matches={recentMatches} />
           </Panel>
         </div>
         <div className="lg:pl-8">
           <Panel title="Recent activity">
-            <ActivityTimeline />
+            <ActivityTimeline activities={activities} />
           </Panel>
         </div>
       </div>
@@ -173,7 +205,7 @@ export default function DashboardPage() {
   );
 }
 
-function JobMatchesTable() {
+function JobMatchesTable({ matches }: { matches: Match[] }) {
   return (
     <Table>
       <TableHeader>
@@ -186,12 +218,12 @@ function JobMatchesTable() {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {jobMatches.map((job) => (
-          <TableRow key={job.company}>
+        {matches.map((job) => (
+          <TableRow key={job.id}>
             <TableCell>
               <div className="flex items-center gap-2">
                 <IconWell size="sm" className="text-[14px] font-bold text-primary">
-                  {job.initial}
+                  {job.company[0]}
                 </IconWell>
                 <span className="font-medium">{job.company}</span>
               </div>
@@ -201,7 +233,10 @@ function JobMatchesTable() {
             </TableCell>
             <TableCell className="text-muted-foreground">
               {job.location}
-              <span className="text-muted-foreground/80"> · {job.time}</span>
+              <span className="text-muted-foreground/80">
+                {" · "}
+                {formatRelativeTime(job.postedAt)}
+              </span>
             </TableCell>
             <TableCell>
               <Badge variant={job.score >= 80 ? "high" : "medium"}>{job.score}</Badge>
@@ -219,8 +254,7 @@ function JobMatchesTable() {
   );
 }
 
-
-function ActivityTimeline() {
+function ActivityTimeline({ activities }: { activities: Activity[] }) {
   return (
     <div className="relative">
       <div
@@ -228,32 +262,34 @@ function ActivityTimeline() {
         aria-hidden
       />
       <ol className="relative m-0 list-none p-0">
-      {activities.map((item, index) => {
-        const Icon = item.icon;
-        const isLatest = index === 0;
-        return (
-          <li
-            key={item.label}
-            className="animate-timeline-in relative flex gap-4 pb-6 last:pb-0"
-            style={{ animationDelay: `${index * 90}ms` }}
-          >
-            <div
-              className={cn(
-                "relative z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-[var(--bg)] bg-surface-hover",
-                isLatest && "animate-timeline-dot border-[color-mix(in_srgb,var(--accent)_30%,transparent)]"
-              )}
+        {activities.map((item, index) => {
+          const Icon = ACTIVITY_ICONS[item.iconKey] ?? Sparkles;
+          const isLatest = index === 0;
+          return (
+            <li
+              key={item.id}
+              className="animate-timeline-in relative flex gap-4 pb-6 last:pb-0"
+              style={{ animationDelay: `${index * 90}ms` }}
             >
-              <Icon className="h-3.5 w-3.5 text-primary" />
-            </div>
-            <div className="min-w-0 flex-1 pt-1.5">
-              <p className="text-[13px] font-medium leading-snug text-foreground">
-                {item.label}
-              </p>
-              <p className="mt-1 text-[11px] text-muted-foreground">{item.time}</p>
-            </div>
-          </li>
-        );
-      })}
+              <div
+                className={cn(
+                  "relative z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-[var(--bg)] bg-surface-hover",
+                  isLatest && "animate-timeline-dot border-[color-mix(in_srgb,var(--accent)_30%,transparent)]",
+                )}
+              >
+                <Icon className="h-3.5 w-3.5 text-primary" />
+              </div>
+              <div className="min-w-0 flex-1 pt-1.5">
+                <p className="text-[13px] font-medium leading-snug text-foreground">
+                  {item.label}
+                </p>
+                <p className="mt-1 text-[11px] text-muted-foreground">
+                  {formatRelativeTime(item.at)}
+                </p>
+              </div>
+            </li>
+          );
+        })}
       </ol>
     </div>
   );
