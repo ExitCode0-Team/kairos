@@ -2,7 +2,7 @@
 
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { GlassCard } from "@/components/ui/glass-card";
 import type { UserProfile } from "@/lib/onboarding/types";
 
 interface ProfileSummaryProps {
@@ -21,7 +21,7 @@ const FIELDS: { key: keyof UserProfile; label: string }[] = [
 export function ProfileSummary({ userData, onConfirm, onEdit }: ProfileSummaryProps) {
   return (
     <div className="animate-message-in space-y-4">
-      <Card>
+      <GlassCard tier={3} padding="default">
         <p className="mb-4 text-[12px] font-medium uppercase tracking-wider text-muted-foreground">
           Your profile
         </p>
@@ -39,8 +39,8 @@ export function ProfileSummary({ userData, onConfirm, onEdit }: ProfileSummaryPr
             />
           ))}
         </div>
-      </Card>
-      <Button type="button" className="h-12 w-full gap-2" onClick={onConfirm}>
+      </GlassCard>
+      <Button type="button" variant="success" className="h-12 w-full gap-2" onClick={onConfirm}>
         Looks good, continue
         <ArrowRight className="h-4 w-4" />
       </Button>
@@ -58,7 +58,7 @@ function ProfileField({
   onEdit: () => void;
 }) {
   return (
-    <div className="flex items-start justify-between gap-4 rounded-lg bg-muted px-3 py-2.5">
+    <div className="glass-2 flex items-start justify-between gap-4 px-3 py-2.5">
       <div className="min-w-0 flex-1">
         <p className="mb-0.5 text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
           {label}

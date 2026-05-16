@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 export function SiteHeader({ inverted = false }: { inverted?: boolean }) {
   return (
@@ -16,19 +17,16 @@ export function SiteHeader({ inverted = false }: { inverted?: boolean }) {
           <Logo inverted={inverted} />
         </Link>
         <nav className="hidden items-center gap-8 md:flex">
-          <a
-            href="#features"
-            className={cnNavLink(inverted)}
-          >
+          <a href="#features" className={navLink(inverted)}>
             Features
           </a>
-          <a href="#how-it-works" className={cnNavLink(inverted)}>
+          <a href="#how-it-works" className={navLink(inverted)}>
             How it works
           </a>
-          <a href="#pricing" className={cnNavLink(inverted)}>
+          <a href="#pricing" className={navLink(inverted)}>
             Pricing
           </a>
-          <a href="#faq" className={cnNavLink(inverted)}>
+          <a href="#faq" className={navLink(inverted)}>
             FAQ
           </a>
         </nav>
@@ -55,8 +53,9 @@ export function SiteHeader({ inverted = false }: { inverted?: boolean }) {
   );
 }
 
-function cnNavLink(inverted: boolean) {
-  return inverted
-    ? "text-sm font-medium text-white/90 hover:text-white"
-    : "text-sm font-medium text-muted-foreground hover:text-foreground";
+function navLink(inverted: boolean) {
+  return cn(
+    "text-sm font-medium transition-colors",
+    inverted ? "text-white/90 hover:text-white" : "text-muted-foreground hover:text-foreground"
+  );
 }

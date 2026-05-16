@@ -8,9 +8,9 @@ interface IconWellProps {
 }
 
 const sizeClasses = {
-  sm: "h-10 w-10",
-  md: "h-14 w-14",
-  lg: "h-16 w-16",
+  sm: "h-10 w-10 rounded-lg",
+  md: "h-12 w-12 rounded-lg",
+  lg: "h-14 w-14 rounded-lg",
 };
 
 export function IconWell({
@@ -22,7 +22,7 @@ export function IconWell({
   return (
     <div
       className={cn(
-        "flex shrink-0 items-center justify-center rounded-full bg-white shadow-none transition-transform duration-200 group-hover:scale-110",
+        "flex shrink-0 items-center justify-center bg-white transition-transform duration-200 group-hover:scale-110",
         sizeClasses[size],
         iconClassName,
         className
