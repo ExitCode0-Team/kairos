@@ -1,58 +1,64 @@
 import {
-  Briefcase,
-  ExternalLink,
   FileText,
-  Gift,
   GitBranch,
-  MessageCircle,
-  Percent,
+  ArrowRight,
+  Target,
   TrendingDown,
   TrendingUp,
-  Users,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { IconWell } from "@/components/ui/icon-well";
 import { PageHeader } from "@/components/ui/page-header";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 
-const STAT_ICONS = [Briefcase, Users, TrendingUp, Percent] as const;
-const STAT_VALUE_COLORS = [
-  "text-primary",
-  "text-secondary",
-  "text-primary",
-  "text-secondary",
-] as const;
+function DashboardZone({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <section
+      className={cn("border-b border-border pb-8 last:border-b-0", className)}
+    >
+      {children}
+    </section>
+  );
+}
 
 function StatCard({
   label,
   value,
   delta,
   positive,
-  accentIndex,
+  highlight,
 }: {
   label: string;
   value: string | number;
   delta?: string;
   positive?: boolean;
-  accentIndex: number;
+  highlight?: boolean;
 }) {
-  const Icon = STAT_ICONS[accentIndex % STAT_ICONS.length];
-  const valueColor = STAT_VALUE_COLORS[accentIndex % STAT_VALUE_COLORS.length];
-
   return (
-    <Card variant="muted" className="p-4">
-      <IconWell size="sm" className="mb-3 bg-muted">
-        <Icon className="h-4 w-4 text-primary" />
-      </IconWell>
-      <div className="mb-1 text-[11px] font-medium uppercase tracking-[0.06em] text-muted-foreground">
+    <Card variant="muted" className="bg-background p-5">
+      <div className="text-[11px] font-medium uppercase tracking-[0.06em] text-muted-foreground">
         {label}
       </div>
       <div
         className={cn(
-          "text-[28px] font-bold leading-tight tracking-tight",
-          valueColor
+          "mt-2 text-4xl font-extrabold leading-none tracking-tight tabular-nums sm:text-[2.75rem]",
+          highlight ? "text-primary" : "text-foreground"
         )}
       >
         {value}
@@ -66,7 +72,7 @@ function StatDelta({ delta, positive }: { delta: string; positive?: boolean }) {
   return (
     <div
       className={cn(
-        "mt-1 flex items-center gap-1 text-[12px]",
+        "mt-2 flex items-center gap-1 text-[12px]",
         positive ? "text-secondary" : "text-muted-foreground"
       )}
     >
@@ -83,10 +89,12 @@ function StatDelta({ delta, positive }: { delta: string; positive?: boolean }) {
 function Panel({
   title,
   action,
+  flushBody,
   children,
 }: {
   title: string;
   action?: string;
+  flushBody?: boolean;
   children: React.ReactNode;
 }) {
   return (
@@ -102,7 +110,7 @@ function Panel({
           </button>
         )}
       </div>
-      <div className="p-4">{children}</div>
+      <div className={cn(flushBody ? "p-0" : "p-4")}>{children}</div>
     </Card>
   );
 }
@@ -114,174 +122,133 @@ const jobMatches = [
   { company: "Notion", initial: "N", role: "Frontend Engineer", location: "New York", time: "1d ago", score: 78 },
 ];
 
-const applications = [
-  { company: "Figma", role: "Senior Engineer", score: 91, status: "interview" as const },
-  { company: "Anthropic", role: "ML Engineer", score: 85, status: "applied" as const },
-  { company: "OpenAI", role: "Research Engineer", score: 82, status: "offer" as const },
-  { company: "Supabase", role: "Full Stack Engineer", score: 79, status: "applied" as const },
-];
-
 const activities = [
   { icon: FileText, label: "CV generated for Stripe", time: "2m ago" },
-  { icon: Gift, label: "Offer received from OpenAI", time: "1h ago" },
+  { icon: Target, label: "New high match: OpenAI", time: "1h ago" },
   { icon: GitBranch, label: "GitHub synced successfully", time: "3h ago" },
 ];
 
 export default function DashboardPage() {
   return (
-    <div className="space-y-6">
-      <PageHeader title="Overview" description="The right moment, applied." />
+    <div className="space-y-8">
+      <section className="section-primary rounded-lg px-6 py-8">
+        <PageHeader
+          title="Overview"
+          description="The right moment, applied."
+          inverted
+          className="mb-6"
+        />
 
-      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-        <StatCard label="Applied" value={24} delta="+3 this week" positive accentIndex={0} />
-        <StatCard label="Interviews" value={5} delta="+2 this week" positive accentIndex={1} />
-        <StatCard label="Avg match score" value={84} delta="+4 pts" positive accentIndex={2} />
-        <StatCard label="Response rate" value="32%" delta="-2%" accentIndex={3} />
-      </div>
-
-      <div className="grid gap-6 lg:grid-cols-[1fr_300px]">
-        <div className="space-y-6">
-          <Panel title="Top matches today" action="View all">
-            <JobMatchesList />
-          </Panel>
-          <Panel title="Recent applications" action="View tracker">
-            <ApplicationsTable />
-          </Panel>
-        </div>
-        <div className="space-y-6">
-          <Panel title="Kairos agent">
-            <AgentPreview />
-          </Panel>
-          <Panel title="Activity">
-            <ActivityList />
-          </Panel>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function JobMatchesList() {
-  return (
-    <div className="space-y-3">
-      {jobMatches.map((job) => (
-        <div key={job.company} className="flex items-center gap-4">
-          <IconWell size="sm" className="text-[14px] font-bold text-primary">
-            {job.initial}
-          </IconWell>
-          <div className="min-w-0 flex-1">
-            <div className="truncate text-[14px] font-medium text-foreground">{job.role}</div>
-            <div className="text-[12px] text-muted-foreground">
-              {job.company} · {job.location} · {job.time}
+        <DashboardZone className="border-b-0 pb-0">
+          <div className="rounded-lg border border-border bg-muted/30 p-4">
+            <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+              <StatCard label="Matches today" value={jobMatches.length} delta="+1 since morning" positive />
+              <StatCard label="New this week" value={12} delta="+4 vs last week" positive />
+              <StatCard label="Avg match score" value={84} delta="+4 pts" positive highlight />
+              <StatCard label="Saved roles" value={7} delta="+2 saved" positive />
             </div>
           </div>
-          <Badge variant={job.score >= 80 ? "high" : "medium"}>{job.score}</Badge>
-          <Button variant="success" size="sm" className="shrink-0 gap-1">
-            <MessageCircle className="h-3 w-3" />
-            Apply
-          </Button>
+        </DashboardZone>
+      </section>
+
+      <div className="grid gap-8 lg:grid-cols-[1fr_300px] lg:divide-x lg:divide-border">
+        <div className="space-y-6 lg:pr-8">
+          <Panel title="Top matches today" action="View all" flushBody>
+            <JobMatchesTable />
+          </Panel>
         </div>
-      ))}
+        <div className="lg:pl-8">
+          <Panel title="Recent activity">
+            <ActivityTimeline />
+          </Panel>
+        </div>
+      </div>
     </div>
   );
 }
 
-function ApplicationsTable() {
-  const statusMap = {
-    applied: { label: "Applied", variant: "default" as const },
-    interview: { label: "Interview", variant: "interview" as const },
-    offer: { label: "Offer", variant: "success" as const },
-  };
-
+function JobMatchesTable() {
   return (
-    <table className="w-full">
-      <thead>
-        <tr className="text-left text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
-          <th className="pb-2">Company</th>
-          <th className="pb-2">Role</th>
-          <th className="pb-2">Score</th>
-          <th className="pb-2">Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        {applications.map((app) => (
-          <tr key={app.company}>
-            <td className="py-2.5 text-[13px] text-foreground">{app.company}</td>
-            <td className="py-2.5 text-[13px] text-muted-foreground">{app.role}</td>
-            <td className="py-2.5">
-              <Badge variant={app.score >= 80 ? "high" : "medium"} className="text-[11px]">
-                {app.score}
-              </Badge>
-            </td>
-            <td className="py-2.5">
-              <Badge variant={statusMap[app.status].variant} className="text-[11px]">
-                {statusMap[app.status].label}
-              </Badge>
-            </td>
-          </tr>
+    <Table>
+      <TableHeader>
+        <TableRow className="hover:bg-transparent">
+          <TableHead>Company</TableHead>
+          <TableHead>Role</TableHead>
+          <TableHead>Location</TableHead>
+          <TableHead>Match</TableHead>
+          <TableHead className="text-right">Action</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {jobMatches.map((job) => (
+          <TableRow key={job.company}>
+            <TableCell>
+              <div className="flex items-center gap-2">
+                <IconWell size="sm" className="text-[14px] font-bold text-primary">
+                  {job.initial}
+                </IconWell>
+                <span className="font-medium">{job.company}</span>
+              </div>
+            </TableCell>
+            <TableCell className="max-w-[200px] truncate font-medium">
+              {job.role}
+            </TableCell>
+            <TableCell className="text-muted-foreground">
+              {job.location}
+              <span className="text-muted-foreground/80"> · {job.time}</span>
+            </TableCell>
+            <TableCell>
+              <Badge variant={job.score >= 80 ? "high" : "medium"}>{job.score}</Badge>
+            </TableCell>
+            <TableCell className="text-right">
+              <Button variant="default" size="sm" className="h-8 gap-1">
+                Apply
+                <ArrowRight className="h-3 w-3" />
+              </Button>
+            </TableCell>
+          </TableRow>
         ))}
-      </tbody>
-    </table>
+      </TableBody>
+    </Table>
   );
 }
 
-function AgentPreview() {
-  return (
-    <div className="space-y-3">
-      <ChatBubble align="left">
-        87% match — Junior Full-Stack Developer @ Wise. Posted 6 mins ago. Reply 1 to generate your CV.
-      </ChatBubble>
-      <ChatBubble align="right">1</ChatBubble>
-      <ChatBubble align="left">
-        Tailoring your CV for Wise… I&apos;ll send the PDF here in about a minute.
-      </ChatBubble>
-      <a
-        href="#"
-        className="inline-flex items-center gap-1 text-[12px] font-medium text-primary transition-colors hover:text-primary-hover"
-      >
-        Open in WhatsApp
-        <ExternalLink className="h-3 w-3" />
-      </a>
-    </div>
-  );
-}
 
-function ChatBubble({
-  children,
-  align,
-}: {
-  children: React.ReactNode;
-  align: "left" | "right";
-}) {
+function ActivityTimeline() {
   return (
-    <div
-      className={cn(
-        "max-w-[95%] rounded-lg px-3 py-2 text-[12px] leading-relaxed",
-        align === "left"
-          ? "bg-muted text-muted-foreground"
-          : "ml-auto bg-primary/20 text-foreground"
-      )}
-    >
-      {children}
-    </div>
-  );
-}
-
-function ActivityList() {
-  return (
-    <div className="space-y-3">
-      {activities.map((item) => {
+    <div className="relative">
+      <div
+        className="animate-timeline-line absolute left-5 top-3 bottom-3 w-px bg-border"
+        aria-hidden
+      />
+      <ol className="relative m-0 list-none p-0">
+      {activities.map((item, index) => {
         const Icon = item.icon;
+        const isLatest = index === 0;
         return (
-          <div key={item.label} className="flex items-center gap-3">
-            <IconWell size="sm" className="bg-muted">
+          <li
+            key={item.label}
+            className="animate-timeline-in relative flex gap-4 pb-6 last:pb-0"
+            style={{ animationDelay: `${index * 90}ms` }}
+          >
+            <div
+              className={cn(
+                "relative z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-background bg-muted",
+                isLatest && "animate-timeline-dot border-primary/30"
+              )}
+            >
               <Icon className="h-3.5 w-3.5 text-primary" />
-            </IconWell>
-            <span className="flex-1 truncate text-[13px] text-foreground">{item.label}</span>
-            <span className="shrink-0 text-[11px] text-muted-foreground">{item.time}</span>
-          </div>
+            </div>
+            <div className="min-w-0 flex-1 pt-1.5">
+              <p className="text-[13px] font-medium leading-snug text-foreground">
+                {item.label}
+              </p>
+              <p className="mt-1 text-[11px] text-muted-foreground">{item.time}</p>
+            </div>
+          </li>
         );
       })}
+      </ol>
     </div>
   );
 }

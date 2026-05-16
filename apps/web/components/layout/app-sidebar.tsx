@@ -4,7 +4,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   Briefcase,
-  FileText,
   Files,
   LayoutDashboard,
   Link2,
@@ -75,12 +74,6 @@ export function AppSidebar() {
           label="Matches"
           badge={12}
           active={pathname === "/matches"}
-        />
-        <NavItem
-          href="/applications"
-          icon={<FileText className="h-4 w-4" />}
-          label="Applications"
-          active={pathname === "/applications"}
         />
         <NavItem
           href="/cvs"

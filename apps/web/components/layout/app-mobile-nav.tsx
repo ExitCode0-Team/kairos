@@ -8,7 +8,6 @@ import { cn } from "@/lib/utils";
 import { Logo } from "@/components/logo";
 import {
   Briefcase,
-  FileText,
   Files,
   LayoutDashboard,
   Link2,
@@ -20,7 +19,6 @@ import {
 const navItems = [
   { href: "/dashboard", icon: LayoutDashboard, label: "Overview" },
   { href: "/matches", icon: Target, label: "Matches" },
-  { href: "/applications", icon: FileText, label: "Applications" },
   { href: "/cvs", icon: Files, label: "My CVs" },
   { href: "/connectors", icon: Link2, label: "Connectors" },
   { href: "/settings", icon: Settings, label: "Settings" },
