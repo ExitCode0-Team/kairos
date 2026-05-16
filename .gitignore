@@ -1,0 +1,33 @@
+# Dependencies
+node_modules
+.pnpm-store
+
+# Build outputs
+.next
+out
+dist
+build
+
+# Env (never commit secrets)
+.env
+.env.local
+.env.*.local
+
+# Turborepo
+.turbo
+
+# IDE
+.idea
+.vscode/*
+!.vscode/extensions.json
+
+# OS
+.DS_Store
+
+# WhatsApp session (Baileys) — commit folder only; never session data
+agents/kairo/src/baileys/session/**
+!agents/kairo/src/baileys/session/.gitkeep
+
+# Logs
+*.log
+npm-debug.log*

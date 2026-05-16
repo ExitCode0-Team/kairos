@@ -1,0 +1,9 @@
+{
+  "name": "@kairos/db",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "build": "node -e \"console.log('scaffold: generate types if needed')\"",
+    "lint": "node -e \"console.log('scaffold: add eslint')\""
+  }
+}

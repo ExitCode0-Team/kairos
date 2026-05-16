@@ -1,0 +1,9 @@
+{
+  "name": "@kairos/minimax",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "build": "node -e \"console.log('scaffold: add tsc or tsup')\"",
+    "lint": "node -e \"console.log('scaffold: add eslint')\""
+  }
+}

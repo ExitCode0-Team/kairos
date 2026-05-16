@@ -1,0 +1,10 @@
+{
+  "name": "@kairos/poller",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "build": "node -e \"console.log('scaffold: add build step')\"",
+    "dev": "node -e \"console.log('scaffold: run poller')\"",
+    "lint": "node -e \"console.log('scaffold: add eslint')\""
+  }
+}
