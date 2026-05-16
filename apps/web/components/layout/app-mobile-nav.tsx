@@ -34,7 +34,7 @@ export function AppMobileNav() {
     <div className="lg:hidden">
       <button
         type="button"
-        className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-foreground"
+        className="flex h-10 w-10 items-center justify-center rounded-md border border-border bg-muted text-foreground"
         onClick={() => setOpen(true)}
         aria-label="Open menu"
       >
@@ -49,12 +49,12 @@ export function AppMobileNav() {
             aria-label="Close menu"
             onClick={() => setOpen(false)}
           />
-          <aside className="glass-3 fixed inset-y-0 left-0 z-50 flex w-[min(280px,85vw)] flex-col p-4 animate-modal-enter">
+          <aside className="fixed inset-y-0 left-0 z-50 flex w-[min(280px,85vw)] flex-col border-r border-border bg-background p-4 animate-modal-enter">
             <div className="mb-6 flex items-center justify-between">
               <Logo />
               <button
                 type="button"
-                className="flex h-10 w-10 items-center justify-center rounded-xl text-muted-foreground hover:bg-white/5"
+                className="flex h-10 w-10 items-center justify-center rounded-md text-muted-foreground hover:bg-muted"
                 onClick={() => setOpen(false)}
                 aria-label="Close menu"
               >
@@ -68,10 +68,10 @@ export function AppMobileNav() {
                   href={href}
                   onClick={() => setOpen(false)}
                   className={cn(
-                    "flex min-h-[44px] items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-medium",
+                    "flex min-h-[44px] items-center gap-2 rounded-md px-3 py-2.5 text-sm font-medium",
                     pathname === href
-                      ? "bg-primary/15 text-foreground"
-                      : "text-muted-foreground hover:bg-white/5"
+                      ? "bg-primary/15 text-primary"
+                      : "text-muted-foreground hover:bg-muted"
                   )}
                 >
                   <Icon className="h-4 w-4" />
@@ -81,7 +81,7 @@ export function AppMobileNav() {
               <Link
                 href="/dashboard"
                 onClick={() => setOpen(false)}
-                className="mt-2 flex min-h-[44px] items-center gap-2 rounded-xl px-3 py-2.5 text-sm text-muted-foreground"
+                className="mt-2 flex min-h-[44px] items-center gap-2 rounded-md px-3 py-2.5 text-sm text-muted-foreground hover:bg-muted"
               >
                 <MessageCircle className="h-4 w-4" />
                 WhatsApp
@@ -90,7 +90,7 @@ export function AppMobileNav() {
               <Link
                 href="/dashboard"
                 onClick={() => setOpen(false)}
-                className="flex min-h-[44px] items-center gap-2 rounded-xl px-3 py-2.5 text-sm text-muted-foreground"
+                className="flex min-h-[44px] items-center gap-2 rounded-md px-3 py-2.5 text-sm text-muted-foreground hover:bg-muted"
               >
                 <Briefcase className="h-4 w-4" />
                 LinkedIn posts

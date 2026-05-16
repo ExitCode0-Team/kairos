@@ -4,11 +4,11 @@ import { AppMobileNav } from "./app-mobile-nav";
 
 export function AppTopbar() {
   return (
-    <header className="bg-background flex h-14 border-b border-border shrink-0 items-center gap-4 border-b border-border px-4 backdrop-blur-md md:px-6">
+    <header className="flex h-14 shrink-0 items-center gap-4 border-b border-border bg-background px-4 md:px-6">
       <AppMobileNav />
       <SearchInput placeholder="Search..." className="max-w-xs flex-1" />
       <div className="flex flex-1 items-center justify-end gap-3">
-        <span className="hidden items-center gap-2 rounded-full border border-border bg-white/5 px-3 py-1.5 text-caption font-medium sm:flex">
+        <span className="hidden items-center gap-2 rounded-md border border-border bg-muted px-3 py-1.5 text-caption font-medium sm:flex">
           <span className="h-2 w-2 rounded-full bg-secondary" />
           Agent active
         </span>

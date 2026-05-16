@@ -3,7 +3,6 @@
 import { useEffect } from "react";
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { GlassPanel } from "./glass-panel";
 
 interface ModalProps {
   open: boolean;
@@ -39,13 +38,15 @@ export function Modal({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <button
         type="button"
-        className="absolute inset-0 bg-background/60 backdrop-blur-sm animate-fade-in"
+        className="absolute inset-0 bg-foreground/20 animate-fade-in"
         aria-label="Close"
         onClick={onClose}
       />
-      <GlassPanel
-        padding="none"
-        className={cn("relative z-10 w-full max-w-lg animate-modal-enter", className)}
+      <div
+        className={cn(
+          "relative z-10 w-full max-w-lg overflow-hidden rounded-lg border border-border bg-background animate-modal-enter",
+          className
+        )}
       >
         {(title || showClose) && (
           <div className="flex items-center justify-between border-b border-border px-6 py-4">
@@ -62,7 +63,7 @@ export function Modal({
           </div>
         )}
         <div className="p-6">{children}</div>
-      </GlassPanel>
+      </div>
     </div>
   );
 }

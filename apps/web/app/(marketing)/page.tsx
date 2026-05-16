@@ -3,7 +3,6 @@ import {
   ArrowRight,
   Briefcase,
   MessageCircle,
-  Sparkles,
   Target,
   Zap,
 } from "lucide-react";
@@ -165,7 +164,7 @@ function HeroIllustrationBlocks() {
       <div className="absolute bottom-8 left-8 h-32 w-32 rounded-lg bg-white/15" />
       <div className="absolute right-12 top-16 h-24 w-24 rotate-12 rounded-full bg-white/10" />
       <div className="absolute left-1/2 top-1/2 flex h-40 w-40 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-lg bg-white">
-        <Sparkles className="h-16 w-16 text-primary" strokeWidth={2} />
+        <Target className="h-16 w-16 text-primary" strokeWidth={2} />
       </div>
     </>
   );

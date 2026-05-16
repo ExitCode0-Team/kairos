@@ -24,9 +24,9 @@ export default function OnboardingPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
-      <header className="relative z-10 border-b border-white/10 bg-surface/80 px-4 py-6 backdrop-blur-md">
+      <header className="relative z-10 bg-primary px-4 py-6">
         <div className="mx-auto flex max-w-2xl justify-center">
-          <Logo />
+          <Logo inverted />
         </div>
       </header>
 
@@ -56,7 +56,7 @@ export default function OnboardingPage() {
 
       {chat.showInput && chat.currentMessage?.inputType && (
         <div className="fixed bottom-0 left-0 right-0 p-4">
-          <div className="glass-3 mx-auto max-w-2xl p-4">
+          <div className="mx-auto max-w-2xl rounded-lg border border-border bg-background p-4">
             <ChatComposer
               inputType={chat.currentMessage.inputType}
               field={chat.currentMessage.field}
@@ -102,7 +102,7 @@ function TypingRow() {
       <IconWell size="sm" className="mt-0.5 bg-muted">
         <LogoMark className="h-4 w-4" />
       </IconWell>
-      <div className="glass-2 rounded-2xl">
+      <div className="rounded-lg bg-muted">
         <TypingIndicator />
       </div>
     </div>
