@@ -118,19 +118,19 @@ function HeroSection() {
       <div className="relative z-10 mx-auto max-w-7xl px-6 pb-24 pt-12 md:pb-32 md:pt-16">
         <div className="grid items-center gap-12 lg:grid-cols-2">
           <div>
-            <p className="mb-4 text-sm font-semibold uppercase tracking-wider text-white/80">
+            <p className="mb-4 text-sm font-semibold uppercase tracking-wider text-on-primary/80">
               AI career agent
             </p>
-            <h1 className="text-4xl font-extrabold leading-tight tracking-tight text-white md:text-6xl">
+            <h1 className="text-4xl font-extrabold leading-tight tracking-tight text-on-primary md:text-6xl">
               The right moment, applied.
             </h1>
-            <p className="mt-6 max-w-lg text-lg text-white/80">
+            <p className="mt-6 max-w-lg text-lg text-on-primary/80">
               Kairos finds roles, tailors your applications, and keeps you in the loop — so you focus on interviews, not spreadsheets.
             </p>
             <div className="mt-10 flex flex-wrap gap-4">
               <Button
                 size="lg"
-                className="bg-white text-primary hover:bg-white/90 hover:scale-105"
+                className="bg-[var(--on-accent)] text-[var(--accent)] hover:bg-[var(--on-accent)]/90 border-transparent"
                 asChild
               >
                 <Link href="/login">
@@ -141,7 +141,7 @@ function HeroSection() {
               <Button
                 variant="outline"
                 size="lg"
-                className="border-4 border-white text-white hover:bg-white hover:text-primary"
+                className="border border-[var(--on-accent)]/60 text-on-primary hover:bg-[var(--on-accent)]/10 hover:border-[var(--on-accent)]"
                 asChild
               >
                 <Link href="/onboarding">Get started free</Link>
@@ -160,11 +160,11 @@ function HeroSection() {
 function HeroIllustrationBlocks() {
   return (
     <>
-      <div className="absolute right-0 top-0 h-48 w-48 rounded-lg bg-white/20" />
-      <div className="absolute bottom-8 left-8 h-32 w-32 rounded-lg bg-white/15" />
-      <div className="absolute right-12 top-16 h-24 w-24 rotate-12 rounded-full bg-white/10" />
-      <div className="absolute left-1/2 top-1/2 flex h-40 w-40 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-lg bg-white">
-        <Target className="h-16 w-16 text-primary" strokeWidth={2} />
+      <div className="absolute right-0 top-0 h-48 w-48 rounded-[16px] bg-[var(--on-accent)]/20" />
+      <div className="absolute bottom-8 left-8 h-32 w-32 rounded-[16px] bg-[var(--on-accent)]/15" />
+      <div className="absolute right-12 top-16 h-24 w-24 rotate-12 rounded-full bg-[var(--on-accent)]/10" />
+      <div className="absolute left-1/2 top-1/2 flex h-40 w-40 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-[16px] bg-[var(--on-accent)]">
+        <Target className="h-16 w-16 text-[var(--accent)]" strokeWidth={2} />
       </div>
     </>
   );
@@ -229,17 +229,17 @@ function BenefitsSection() {
 function BenefitsText() {
   return (
     <div>
-      <h2 className="text-3xl font-extrabold tracking-tight text-white md:text-4xl">
+      <h2 className="text-3xl font-extrabold tracking-tight text-on-primary md:text-4xl">
         Your profile stays sharp
       </h2>
-      <p className="mt-4 text-lg text-white/80">
+      <p className="mt-4 text-lg text-on-primary/80">
         Connect GitHub, Notion, and Drive. Kairos keeps your skills and projects current so every application reflects the real you.
       </p>
       <ul className="mt-8 space-y-4">
         {["Auto-sync from connected sources", "Match scores you can trust", "One agent, every channel"].map(
           (item) => (
-            <li key={item} className="flex items-center gap-3 text-white">
-              <span className="flex h-8 w-8 items-center justify-center rounded-md bg-white/20 text-sm font-bold">
+            <li key={item} className="flex items-center gap-3 text-on-primary">
+              <span className="flex h-8 w-8 items-center justify-center rounded-md bg-[var(--on-accent)]/20 text-sm font-bold">
                 ✓
               </span>
               {item}
@@ -255,9 +255,9 @@ function BenefitsVisual() {
   return (
     <div className="relative h-64" aria-hidden>
       <div className="absolute inset-0 flex items-center justify-center">
-        <div className="h-40 w-full max-w-sm rounded-lg bg-white/20" />
+        <div className="h-40 w-full max-w-sm rounded-[16px] bg-[var(--on-accent)]/20" />
       </div>
-      <Briefcase className="absolute left-1/4 top-1/2 h-12 w-12 -translate-y-1/2 text-white" strokeWidth={2} />
+      <Briefcase className="absolute left-1/4 top-1/2 h-12 w-12 -translate-y-1/2 text-on-primary" strokeWidth={2} />
     </div>
   );
 }
@@ -266,16 +266,19 @@ function HowItWorksSection() {
   return (
     <Section variant="dark" id="how-it-works">
       <div className="mb-12 text-center">
-        <h2 className="text-3xl font-extrabold tracking-tight text-white md:text-4xl">
+        <h2 className="text-3xl font-extrabold tracking-tight md:text-4xl">
           How it works
         </h2>
       </div>
       <div className="grid gap-6 md:grid-cols-3">
         {steps.map((step) => (
-          <div key={step.num} className="rounded-lg bg-white/10 p-8">
-            <span className="text-4xl font-extrabold text-white/40">{step.num}</span>
-            <h3 className="mt-4 text-lg font-bold text-white">{step.title}</h3>
-            <p className="mt-2 text-sm text-white/70">{step.desc}</p>
+          <div
+            key={step.num}
+            className="rounded-[16px] border border-border bg-[var(--bg-elevated)] p-8"
+          >
+            <span className="text-4xl font-extrabold text-muted-foreground/60">{step.num}</span>
+            <h3 className="mt-4 text-lg font-bold text-foreground">{step.title}</h3>
+            <p className="mt-2 text-sm text-muted-foreground">{step.desc}</p>
           </div>
         ))}
       </div>
@@ -298,12 +301,12 @@ function PricingSection() {
             key={plan.name}
             className={
               plan.popular
-                ? "scale-105 rounded-lg bg-primary p-8 text-white transition-all duration-200 hover:scale-[1.02]"
-                : "rounded-lg bg-muted p-8 transition-all duration-200 hover:scale-[1.02]"
+                ? "scale-105 rounded-[20px] bg-primary p-8 text-on-primary transition-all duration-200"
+                : "rounded-[20px] border border-border bg-muted p-8 transition-all duration-200"
             }
           >
             {plan.popular && (
-              <span className="mb-4 inline-block rounded-md bg-white/20 px-2 py-0.5 text-xs font-semibold uppercase tracking-wider">
+              <span className="mb-4 inline-block rounded-md bg-[var(--on-accent)]/20 px-2 py-0.5 text-xs font-semibold uppercase tracking-wider">
                 Popular
               </span>
             )}
@@ -320,7 +323,7 @@ function PricingSection() {
             </ul>
             <Button
               variant={plan.popular ? "secondary" : "outline"}
-              className={`mt-8 w-full ${plan.popular ? "bg-white text-primary hover:bg-white/90" : ""}`}
+              className={`mt-8 w-full ${plan.popular ? "bg-[var(--on-accent)] text-[var(--accent)] hover:bg-[var(--on-accent)]/90 border-transparent" : ""}`}
               asChild
             >
               <Link href="/onboarding">{plan.cta}</Link>
@@ -338,9 +341,9 @@ function FaqSection() {
       <div className="mb-12 text-center">
         <h2 className="text-3xl font-extrabold tracking-tight md:text-4xl">FAQ</h2>
       </div>
-      <div className="mx-auto max-w-2xl divide-y-2 divide-border overflow-hidden rounded-lg border-2 border-border">
+      <div className="mx-auto max-w-2xl divide-y divide-border overflow-hidden rounded-[16px] border border-border bg-surface">
         {faqs.map((faq) => (
-          <details key={faq.q} className="group bg-background px-6 py-4">
+          <details key={faq.q} className="group px-6 py-4">
             <summary className="cursor-pointer list-none font-semibold">{faq.q}</summary>
             <p className="mt-2 text-sm text-muted-foreground">{faq.a}</p>
           </details>
@@ -354,20 +357,24 @@ function CtaSection() {
   return (
     <Section variant="accent">
       <div className="text-center">
-        <h2 className="text-3xl font-extrabold tracking-tight text-white md:text-4xl">
+        <h2 className="text-3xl font-extrabold tracking-tight text-on-primary md:text-4xl">
           Ready to apply at the right moment?
         </h2>
-        <p className="mx-auto mt-4 max-w-xl text-lg text-white/90">
+        <p className="mx-auto mt-4 max-w-xl text-lg text-on-primary/90">
           Join thousands of job seekers using Kairos to move faster.
         </p>
         <div className="mt-10 flex flex-wrap justify-center gap-4">
-          <Button size="lg" className="bg-white text-accent hover:bg-white/90" asChild>
+          <Button
+            size="lg"
+            className="bg-[var(--on-accent)] text-[var(--warning)] hover:bg-[var(--on-accent)]/90 border-transparent"
+            asChild
+          >
             <Link href="/onboarding">Get started free</Link>
           </Button>
           <Button
             variant="outline"
             size="lg"
-            className="border-4 border-white text-white hover:bg-white hover:text-accent"
+            className="border border-[var(--on-accent)]/60 text-on-primary hover:bg-[var(--on-accent)]/10 hover:border-[var(--on-accent)]"
             asChild
           >
             <Link href="/login">Sign in</Link>
@@ -380,15 +387,17 @@ function CtaSection() {
 
 function Footer() {
   return (
-    <footer className="section-dark py-12">
+    <footer className="border-t border-border bg-[var(--bg-elevated)] py-12">
       <div className="mx-auto max-w-7xl px-6">
         <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
-          <p className="text-sm text-white/60">© {new Date().getFullYear()} Kairos. All rights reserved.</p>
-          <nav className="flex flex-wrap gap-6 text-sm text-white/80">
-            <Link href="/login" className="hover:text-white">Sign in</Link>
-            <Link href="/onboarding" className="hover:text-white">Get started</Link>
-            <Link href="/dashboard" className="hover:text-white">Dashboard</Link>
-            <Link href="/connectors" className="hover:text-white">Connectors</Link>
+          <p className="text-sm text-muted-foreground">
+            © {new Date().getFullYear()} Kairos. All rights reserved.
+          </p>
+          <nav className="flex flex-wrap gap-6 text-sm text-muted-foreground">
+            <Link href="/login" className="transition-colors hover:text-foreground">Sign in</Link>
+            <Link href="/onboarding" className="transition-colors hover:text-foreground">Get started</Link>
+            <Link href="/dashboard" className="transition-colors hover:text-foreground">Dashboard</Link>
+            <Link href="/connectors" className="transition-colors hover:text-foreground">Connectors</Link>
           </nav>
         </div>
       </div>

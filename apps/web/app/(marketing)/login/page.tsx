@@ -40,14 +40,14 @@ export default function LoginPage() {
           <Logo inverted />
         </Link>
         <div className="relative z-10">
-          <h1 className="text-4xl font-extrabold tracking-tight text-white">
+          <h1 className="text-4xl font-extrabold tracking-tight text-on-primary">
             The right moment, applied.
           </h1>
-          <p className="mt-4 max-w-md text-lg text-white/80">
+          <p className="mt-4 max-w-md text-lg text-on-primary/80">
             Your AI career agent finds matches, tailors applications, and keeps you in the loop.
           </p>
         </div>
-        <p className="relative z-10 text-sm text-white/60">© Kairos</p>
+        <p className="relative z-10 text-sm text-on-primary/60">© Kairos</p>
       </div>
       <div className="flex flex-1 items-center justify-center bg-background p-6">
         <div className="w-full max-w-[400px]">

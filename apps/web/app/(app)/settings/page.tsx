@@ -4,12 +4,16 @@ import { SectionShell } from "@/components/ui/section-shell";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import { AppearanceSettings } from "@/components/settings/appearance-settings";
 
 export default function SettingsPage() {
   return (
     <>
       <PageHeader title="Settings" description="Manage your account and preferences." />
       <Card className="mx-auto max-w-2xl space-y-8 p-8">
+        <SectionShell title="Appearance" description="Choose how Kairos looks.">
+          <AppearanceSettings />
+        </SectionShell>
         <SectionShell title="Profile" description="How you appear in Kairos.">
           <div className="space-y-4">
             <div>

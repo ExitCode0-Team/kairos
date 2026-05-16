@@ -8,7 +8,7 @@ export function SiteHeader({ inverted = false }: { inverted?: boolean }) {
     <header
       className={
         inverted
-          ? "relative z-10 border-b border-white/20"
+          ? "relative z-10 border-b border-[var(--on-accent)]/15"
           : "relative z-10 border-b border-border bg-background"
       }
     >
@@ -34,7 +34,11 @@ export function SiteHeader({ inverted = false }: { inverted?: boolean }) {
           <Button
             variant={inverted ? "secondary" : "ghost"}
             size="sm"
-            className={inverted ? "bg-white/20 text-white hover:bg-white/30" : ""}
+            className={
+              inverted
+                ? "bg-[var(--on-accent)]/15 text-on-primary border-transparent hover:bg-[var(--on-accent)]/25"
+                : ""
+            }
             asChild
           >
             <Link href="/login">Sign in</Link>
@@ -42,7 +46,11 @@ export function SiteHeader({ inverted = false }: { inverted?: boolean }) {
           <Button
             variant={inverted ? "secondary" : "default"}
             size="sm"
-            className={inverted ? "bg-white text-primary hover:bg-white/90" : ""}
+            className={
+              inverted
+                ? "bg-[var(--on-accent)] text-[var(--accent)] border-transparent hover:bg-[var(--on-accent)]/90"
+                : ""
+            }
             asChild
           >
             <Link href="/onboarding">Get started</Link>
@@ -56,6 +64,8 @@ export function SiteHeader({ inverted = false }: { inverted?: boolean }) {
 function navLink(inverted: boolean) {
   return cn(
     "text-sm font-medium transition-colors",
-    inverted ? "text-white/90 hover:text-white" : "text-muted-foreground hover:text-foreground"
+    inverted
+      ? "text-on-primary/85 hover:text-on-primary"
+      : "text-muted-foreground hover:text-foreground"
   );
 }

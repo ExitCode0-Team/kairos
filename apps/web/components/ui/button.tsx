@@ -4,17 +4,22 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-semibold shadow-none transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50 active:scale-95 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg)] disabled:pointer-events-none disabled:opacity-50 active:scale-[0.98] [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
-        default: "bg-primary text-white hover:bg-primary-hover hover:scale-105",
-        secondary: "bg-muted text-foreground hover:bg-muted/80",
-        success: "bg-secondary text-white hover:bg-secondary-hover hover:scale-105",
+        default:
+          "bg-primary text-on-primary border border-transparent hover:bg-primary-hover hover:shadow-[var(--shadow-focus-ring)]",
+        secondary:
+          "bg-surface text-foreground border border-border hover:bg-surface-hover",
+        success:
+          "bg-secondary text-on-primary hover:bg-secondary-hover hover:shadow-[var(--shadow-focus-ring)]",
         outline:
-          "border-4 border-primary bg-transparent text-primary hover:bg-primary hover:text-white",
-        ghost: "bg-transparent text-foreground hover:bg-muted",
-        danger: "bg-danger text-white hover:opacity-90",
+          "border border-border bg-transparent text-foreground hover:bg-surface-hover hover:border-border-strong",
+        ghost:
+          "bg-transparent text-muted-foreground hover:bg-surface-hover hover:text-foreground",
+        danger:
+          "bg-[var(--danger)] text-on-primary hover:bg-[var(--danger)]/90",
         link: "text-primary underline-offset-4 hover:text-primary-hover hover:underline active:scale-100 rounded-none",
       },
       size: {

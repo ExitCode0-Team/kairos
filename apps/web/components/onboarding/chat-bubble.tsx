@@ -28,10 +28,10 @@ export function AIMessage({
         isNew && "animate-message-in"
       )}
     >
-      <IconWell size="sm" className="mt-0.5 bg-muted">
-        <LogoMark className="h-4 w-4" />
+      <IconWell size="sm" className="mt-0.5 bg-primary">
+        <LogoMark className="h-4 w-4 text-on-primary" />
       </IconWell>
-      <div className="rounded-lg bg-muted px-4 py-3">
+      <div className="rounded-[14px] border border-border bg-surface px-4 py-3">
         <p className="text-[15px] leading-relaxed text-foreground">{content}</p>
       </div>
     </div>
@@ -47,8 +47,8 @@ export function UserMessage({
 }) {
   return (
     <div className={cn("flex justify-end", isNew && "animate-message-in")}>
-      <div className="max-w-md rounded-lg bg-primary px-4 py-3">
-        <p className="text-[15px] text-white">{content}</p>
+      <div className="max-w-md rounded-[14px] bg-primary px-4 py-3">
+        <p className="text-[15px] text-on-primary">{content}</p>
       </div>
     </div>
   );
@@ -63,12 +63,12 @@ export function TagsMessage({
 }) {
   return (
     <div className={cn("flex justify-end", isNew && "animate-message-in")}>
-      <div className="max-w-md rounded-lg bg-primary px-4 py-3">
+      <div className="max-w-md rounded-[14px] bg-primary px-4 py-3">
         <div className="flex flex-wrap gap-2">
           {tags.map((tag) => (
             <span
               key={tag}
-              className="inline-flex rounded-md bg-white/20 px-2.5 py-1 text-[13px] font-medium text-white"
+              className="inline-flex rounded-md bg-[var(--on-accent)]/20 px-2.5 py-1 text-[13px] font-medium text-on-primary"
             >
               {tag}
             </span>

@@ -4,7 +4,7 @@ export function LogoTicker() {
   const items = [...companies, ...companies];
 
   return (
-    <div className="overflow-hidden border-y border-white/10 py-8">
+    <div className="overflow-hidden border-y border-border py-8">
       <p className="mb-6 text-center text-label">Trusted by job seekers at</p>
       <div className="relative">
         <div

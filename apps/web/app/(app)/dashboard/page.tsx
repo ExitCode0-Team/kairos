@@ -51,7 +51,7 @@ function StatCard({
   highlight?: boolean;
 }) {
   return (
-    <Card variant="muted" className="bg-background p-5">
+    <Card variant="elevated" padding="none" className="p-5">
       <div className="text-[11px] font-medium uppercase tracking-[0.06em] text-muted-foreground">
         {label}
       </div>
@@ -73,7 +73,7 @@ function StatDelta({ delta, positive }: { delta: string; positive?: boolean }) {
     <div
       className={cn(
         "mt-2 flex items-center gap-1 text-[12px]",
-        positive ? "text-secondary" : "text-muted-foreground"
+        positive ? "text-[var(--success)]" : "text-[var(--danger)]"
       )}
     >
       {positive ? (
@@ -131,24 +131,30 @@ const activities = [
 export default function DashboardPage() {
   return (
     <div className="space-y-8">
-      <section className="section-primary rounded-lg px-6 py-8">
-        <PageHeader
-          title="Overview"
-          description="The right moment, applied."
-          inverted
-          className="mb-6"
+      <section className="section-primary relative overflow-hidden rounded-[20px] px-6 py-8">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 bg-gradient-to-br from-[var(--accent)] via-[var(--accent)] to-[color-mix(in_srgb,var(--accent)_60%,#000)]"
         />
+        <div className="relative">
+          <PageHeader
+            title="Overview"
+            description="The right moment, applied."
+            inverted
+            className="mb-6"
+          />
 
-        <DashboardZone className="border-b-0 pb-0">
-          <div className="rounded-lg border border-border bg-muted/30 p-4">
-            <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-              <StatCard label="Matches today" value={jobMatches.length} delta="+1 since morning" positive />
-              <StatCard label="New this week" value={12} delta="+4 vs last week" positive />
-              <StatCard label="Avg match score" value={84} delta="+4 pts" positive highlight />
-              <StatCard label="Saved roles" value={7} delta="+2 saved" positive />
+          <DashboardZone className="border-b-0 pb-0">
+            <div className="rounded-[16px] border border-white/10 bg-white/5 p-4 backdrop-blur-sm">
+              <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+                <StatCard label="Matches today" value={jobMatches.length} delta="+1 since morning" positive />
+                <StatCard label="New this week" value={12} delta="+4 vs last week" positive />
+                <StatCard label="Avg match score" value={84} delta="+4 pts" positive highlight />
+                <StatCard label="Saved roles" value={7} delta="+2 saved" positive />
+              </div>
             </div>
-          </div>
-        </DashboardZone>
+          </DashboardZone>
+        </div>
       </section>
 
       <div className="grid gap-8 lg:grid-cols-[1fr_300px] lg:divide-x lg:divide-border">
@@ -233,8 +239,8 @@ function ActivityTimeline() {
           >
             <div
               className={cn(
-                "relative z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-background bg-muted",
-                isLatest && "animate-timeline-dot border-primary/30"
+                "relative z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-[var(--bg)] bg-surface-hover",
+                isLatest && "animate-timeline-dot border-[color-mix(in_srgb,var(--accent)_30%,transparent)]"
               )}
             >
               <Icon className="h-3.5 w-3.5 text-primary" />

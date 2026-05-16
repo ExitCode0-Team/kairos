@@ -22,7 +22,7 @@ export function IconWell({
   return (
     <div
       className={cn(
-        "flex shrink-0 items-center justify-center bg-white transition-transform duration-200 group-hover:scale-110",
+        "flex shrink-0 items-center justify-center border border-border bg-surface transition-transform duration-200 group-hover:scale-105",
         sizeClasses[size],
         iconClassName,
         className

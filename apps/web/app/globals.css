@@ -1,33 +1,108 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
 @theme inline {
-  --color-background: #ffffff;
-  --color-surface: #ffffff;
-  --color-foreground: #111827;
-  --color-primary: #3b82f6;
-  --color-primary-hover: #2563eb;
-  --color-secondary: #10b981;
-  --color-secondary-hover: #059669;
-  --color-accent: #f59e0b;
-  --color-accent-hover: #d97706;
-  --color-muted: #f3f4f6;
-  --color-muted-foreground: #6b7280;
-  --color-border: #e5e7eb;
-  --color-danger: #ef4444;
-  --color-placeholder: #9ca3af;
-
-  --color-text-primary: var(--color-foreground);
-  --color-text-secondary: var(--color-muted-foreground);
-  --color-text-muted: var(--color-muted-foreground);
-  --color-success: var(--color-secondary);
-
   --font-sans: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
 
-  --radius-sm: 6px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
 
   --ease-kairos: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --color-background: var(--bg);
+  --color-bg-elevated: var(--bg-elevated);
+  --color-surface: var(--surface);
+  --color-surface-hover: var(--surface-hover);
+  --color-surface-active: var(--surface-active);
+  --color-foreground: var(--fg);
+  --color-foreground-secondary: var(--fg-secondary);
+  --color-muted: var(--surface-2);
+  --color-muted-foreground: var(--fg-muted);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-primary: var(--accent);
+  --color-primary-hover: var(--accent-hover);
+  --color-primary-soft: var(--accent-soft);
+  --color-on-primary: var(--on-accent);
+  --color-secondary: var(--success);
+  --color-secondary-hover: var(--success-hover);
+  --color-accent: var(--warning);
+  --color-accent-hover: var(--warning-hover);
+  --color-danger: var(--danger);
+  --color-placeholder: var(--fg-disabled);
+
+  --color-text-primary: var(--fg);
+  --color-text-secondary: var(--fg-secondary);
+  --color-text-muted: var(--fg-muted);
+  --color-success: var(--success);
+}
+
+:root,
+[data-theme="light"] {
+  --bg: #ffffff;
+  --bg-elevated: #ffffff;
+  --surface: #ffffff;
+  --surface-2: #f3f4f6;
+  --surface-hover: #f9fafb;
+  --surface-active: #f3f4f6;
+  --border: #e5e7eb;
+  --border-strong: #d1d5db;
+  --fg: #111827;
+  --fg-secondary: #374151;
+  --fg-muted: #6b7280;
+  --fg-disabled: #9ca3af;
+  --accent: #3b82f6;
+  --accent-hover: #2563eb;
+  --accent-soft: rgb(59 130 246 / 0.12);
+  --on-accent: #ffffff;
+  --success: #10b981;
+  --success-hover: #059669;
+  --success-soft: rgb(16 185 129 / 0.14);
+  --warning: #f59e0b;
+  --warning-hover: #d97706;
+  --warning-soft: rgb(245 158 11 / 0.14);
+  --danger: #ef4444;
+  --danger-soft: rgb(239 68 68 / 0.12);
+  --shadow-card: 0 1px 0 0 rgb(17 24 39 / 0.04);
+  --shadow-elevated: 0 8px 24px -8px rgb(17 24 39 / 0.12);
+  --shadow-modal: 0 24px 48px -12px rgb(17 24 39 / 0.2);
+  --shadow-focus-ring: 0 0 0 4px var(--accent-soft);
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --bg: #08090A;
+  --bg-elevated: #0F1115;
+  --surface: #16181D;
+  --surface-2: #0F1115;
+  --surface-hover: #1B1E24;
+  --surface-active: #20232B;
+  --border: rgb(255 255 255 / 0.08);
+  --border-strong: rgb(255 255 255 / 0.14);
+  --fg: rgb(255 255 255 / 0.96);
+  --fg-secondary: rgb(255 255 255 / 0.72);
+  --fg-muted: rgb(255 255 255 / 0.50);
+  --fg-disabled: rgb(255 255 255 / 0.32);
+  --accent: #5E6AD2;
+  --accent-hover: #6F7BE0;
+  --accent-soft: rgb(94 106 210 / 0.16);
+  --on-accent: #ffffff;
+  --success: #4ADE80;
+  --success-hover: #34D399;
+  --success-soft: rgb(74 222 128 / 0.14);
+  --warning: #F59E0B;
+  --warning-hover: #D97706;
+  --warning-soft: rgb(245 158 11 / 0.14);
+  --danger: #F87171;
+  --danger-soft: rgb(248 113 113 / 0.16);
+  --shadow-card: 0 0 0 1px rgb(255 255 255 / 0.03);
+  --shadow-elevated: 0 0 0 1px rgb(255 255 255 / 0.04), 0 8px 30px rgb(0 0 0 / 0.35);
+  --shadow-modal: 0 0 0 1px rgb(255 255 255 / 0.06), 0 24px 60px rgb(0 0 0 / 0.55);
+  --shadow-focus-ring: 0 0 0 4px rgb(94 106 210 / 0.22);
+  color-scheme: dark;
 }
 
 @layer base {
@@ -36,13 +111,21 @@
   }
 
   body {
-    background-color: var(--color-background);
-    color: var(--color-foreground);
+    background-color: var(--bg);
+    color: var(--fg);
     font-family: var(--font-sans);
     font-size: 15px;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    transition:
+      background-color 200ms var(--ease-kairos),
+      color 200ms var(--ease-kairos);
+  }
+
+  ::selection {
+    background-color: var(--accent-soft);
+    color: var(--fg);
   }
 }
 
@@ -74,26 +157,43 @@
   .text-label {
     @apply text-[11px] font-semibold uppercase tracking-[0.08em] text-muted-foreground;
   }
+  .text-on-primary {
+    color: var(--on-accent);
+  }
+
+  .shadow-card {
+    box-shadow: var(--shadow-card);
+  }
+  .shadow-elevated {
+    box-shadow: var(--shadow-elevated);
+  }
+  .shadow-modal {
+    box-shadow: var(--shadow-modal);
+  }
 
   .section-muted {
-    background-color: var(--color-muted);
-    color: var(--color-foreground);
+    background-color: var(--surface-2);
+    color: var(--fg);
   }
   .section-primary {
-    background-color: var(--color-primary);
-    color: #ffffff;
+    background-color: var(--accent);
+    color: var(--on-accent);
   }
   .section-secondary {
-    background-color: var(--color-secondary);
-    color: #ffffff;
+    background-color: var(--success);
+    color: var(--on-accent);
   }
   .section-accent {
-    background-color: var(--color-accent);
-    color: #ffffff;
+    background-color: var(--warning);
+    color: var(--on-accent);
   }
   .section-dark {
-    background-color: var(--color-foreground);
-    color: #ffffff;
+    background-color: var(--fg);
+    color: var(--bg);
+  }
+  [data-theme="dark"] .section-dark {
+    background-color: var(--surface);
+    color: var(--fg);
   }
 
   .animate-page-enter {
@@ -200,10 +300,10 @@
   @keyframes timeline-dot-pulse {
     0%,
     100% {
-      box-shadow: 0 0 0 0 rgb(59 130 246 / 0.35);
+      box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 35%, transparent);
     }
     50% {
-      box-shadow: 0 0 0 4px rgb(59 130 246 / 0);
+      box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 0%, transparent);
     }
   }
 
@@ -219,9 +319,9 @@
   .animate-shimmer {
     background: linear-gradient(
       90deg,
-      var(--color-muted) 0%,
-      color-mix(in srgb, var(--color-muted) 80%, white) 50%,
-      var(--color-muted) 100%
+      var(--surface-2) 0%,
+      var(--surface-hover) 50%,
+      var(--surface-2) 100%
     );
     background-size: 200% 100%;
     animation: shimmer 1.5s ease-in-out infinite;

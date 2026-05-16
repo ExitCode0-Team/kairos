@@ -50,8 +50,8 @@ function DropZone({
   return (
     <div
       className={cn(
-        "cursor-pointer rounded-lg border-2 border-dashed border-border bg-background p-8 text-center transition-colors duration-200",
-        isDragging && "border-primary bg-blue-50"
+        "cursor-pointer rounded-[14px] border-2 border-dashed border-border bg-surface p-8 text-center transition-colors duration-200",
+        isDragging && "border-[var(--accent)] bg-[var(--accent-soft)]"
       )}
       onDragOver={(e) => {
         e.preventDefault();

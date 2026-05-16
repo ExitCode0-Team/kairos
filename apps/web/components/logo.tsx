@@ -31,8 +31,10 @@ export function Logo({ showMark = true, className, markClassName, inverted }: Lo
       {showMark && (
         <span
           className={cn(
-            "flex h-10 w-10 items-center justify-center rounded-full shadow-none",
-            inverted ? "bg-white text-primary" : "bg-primary text-white"
+            "flex h-9 w-9 items-center justify-center rounded-[10px]",
+            inverted
+              ? "bg-[var(--on-accent)] text-[var(--accent)]"
+              : "bg-primary text-on-primary"
           )}
         >
           <HourglassMark className={markClassName} />
@@ -41,7 +43,7 @@ export function Logo({ showMark = true, className, markClassName, inverted }: Lo
       <span
         className={cn(
           "text-lg font-bold tracking-tight",
-          inverted ? "text-white" : "text-foreground"
+          inverted ? "text-on-primary" : "text-foreground"
         )}
       >
         kairos.
@@ -53,7 +55,10 @@ export function Logo({ showMark = true, className, markClassName, inverted }: Lo
 export function LogoMark({ className, inverted }: { className?: string; inverted?: boolean }) {
   return (
     <HourglassMark
-      className={cn(inverted ? "text-primary" : "text-white", className)}
+      className={cn(
+        inverted ? "text-[var(--accent)]" : "text-on-primary",
+        className
+      )}
     />
   );
 }

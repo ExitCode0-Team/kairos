@@ -23,12 +23,12 @@ export function PageHeader({
       )}
     >
       <div>
-        <h1 className={cn("text-h1", inverted && "text-white")}>{title}</h1>
+        <h1 className={cn("text-h1", inverted && "text-on-primary")}>{title}</h1>
         {description && (
           <p
             className={cn(
               "mt-1 text-body-sm",
-              inverted ? "text-white/80" : "text-muted-foreground"
+              inverted ? "text-on-primary/80" : "text-muted-foreground"
             )}
           >
             {description}
