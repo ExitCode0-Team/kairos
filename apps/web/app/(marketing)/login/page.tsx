@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
-import { FlatDecor } from "@/components/marketing/flat-decor";
+import { FlatDecor } from "@/components/flat-decor";
 
 function GoogleIcon() {
   return (
@@ -36,7 +36,7 @@ export default function LoginPage() {
     <div className="flex min-h-screen">
       <div className="relative hidden w-1/2 flex-col justify-between section-primary p-12 lg:flex">
         <FlatDecor />
-        <Link href="/">
+        <Link href="/dashboard">
           <Logo inverted />
         </Link>
         <div className="relative z-10">
@@ -62,7 +62,7 @@ function LoginForm() {
   return (
     <>
       <div className="mb-8 lg:hidden">
-        <Link href="/">
+        <Link href="/dashboard">
           <Logo />
         </Link>
       </div>
