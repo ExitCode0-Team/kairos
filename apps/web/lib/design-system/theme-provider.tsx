@@ -1,20 +1,22 @@
 "use client";
 
-import { createContext, useContext } from "react";
-import type { ThemeMode } from "./tokens";
+import { ThemeProvider as NextThemes, useTheme as useNextTheme } from "next-themes";
+import type { ReactNode } from "react";
 
-const ThemeContext = createContext<ThemeMode>("light");
-
-export function ThemeProvider({
-  children,
-  forcedTheme = "light",
-}: {
-  children: React.ReactNode;
-  forcedTheme?: ThemeMode;
-}) {
-  return <ThemeContext.Provider value={forcedTheme}>{children}</ThemeContext.Provider>;
+export function ThemeProvider({ children }: { children: ReactNode }) {
+  return (
+    <NextThemes
+      attribute="data-theme"
+      defaultTheme="system"
+      enableSystem
+      disableTransitionOnChange={false}
+      storageKey="kairos-theme"
+    >
+      {children}
+    </NextThemes>
+  );
 }
 
 export function useTheme() {
-  return useContext(ThemeContext);
+  return useNextTheme();
 }

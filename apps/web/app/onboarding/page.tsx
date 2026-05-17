@@ -24,7 +24,7 @@ export default function OnboardingPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
-      <header className="relative z-10 border-b border-white/10 bg-surface/80 px-4 py-6 backdrop-blur-md">
+      <header className="relative z-10 border-b border-border bg-[var(--bg-elevated)] px-4 py-5">
         <div className="mx-auto flex max-w-2xl justify-center">
           <Logo />
         </div>
@@ -55,16 +55,17 @@ export default function OnboardingPage() {
       </main>
 
       {chat.showInput && chat.currentMessage?.inputType && (
-        <div className="fixed bottom-0 left-0 right-0 p-4">
-          <div className="glass-3 mx-auto max-w-2xl p-4">
+        <div className="fixed bottom-0 left-0 right-0 z-20 p-4">
+          <div className="mx-auto max-w-2xl rounded-[16px] border border-border bg-[var(--bg-elevated)] p-4 shadow-elevated">
             <ChatComposer
               inputType={chat.currentMessage.inputType}
               field={chat.currentMessage.field}
               optional={chat.currentStep?.optional}
               onSubmit={chat.handleAnswer}
-              onSkipExperience={chat.handleSkipExperience}
+              onSkipStep={chat.handleSkipStep}
               onCVUpload={chat.handleCVUpload}
               onSkipCV={chat.handleSkipCV}
+              onRetry={chat.handleRetrySubmit}
             />
           </div>
         </div>
@@ -82,7 +83,9 @@ function MessageRow({
 }) {
   const isTags =
     message.type === "user" &&
-    prev?.field === "skills" &&
+    (prev?.field === "skills" ||
+      prev?.field === "projects" ||
+      prev?.field === "references") &&
     message.content.includes(",");
 
   if (message.type === "ai") {
@@ -99,10 +102,10 @@ function MessageRow({
 function TypingRow() {
   return (
     <div className="flex items-start gap-3">
-      <IconWell size="sm" className="mt-0.5 bg-muted">
-        <LogoMark className="h-4 w-4" />
+      <IconWell size="sm" className="mt-0.5 bg-primary">
+        <LogoMark className="h-4 w-4 text-on-primary" />
       </IconWell>
-      <div className="glass-2 rounded-2xl">
+      <div className="rounded-[14px] border border-border bg-surface">
         <TypingIndicator />
       </div>
     </div>

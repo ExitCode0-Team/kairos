@@ -1,85 +1,29 @@
-import {
-  DiscordIcon,
-  DriveIcon,
-  GitHubIcon,
-  MailIcon,
-  NotionIcon,
-  SlackIcon,
-  TelegramIcon,
-  UploadIcon,
-  WhatsAppIcon,
-} from "@/components/connectors/icons";
+/**
+ * Backward-compatible re-export of the connector catalog text. The canonical
+ * source now lives in apps/web/lib/api/fallback.ts (text only) and the icons
+ * in apps/web/components/connectors/icon-registry.tsx.
+ *
+ * @deprecated import from `@/lib/api/fallback` + `@/components/connectors/icon-registry` instead.
+ */
+import { connectorsFallback } from "@/lib/api/fallback";
+import { getConnectorIcon, getConnectorIconClass } from "@/components/connectors/icon-registry";
 
-export const dataSources = [
-  {
-    id: "notion",
-    icon: <NotionIcon />,
-    iconClass: "text-foreground",
-    name: "Notion",
-    description: "Sync notes and docs to keep your profile current.",
-  },
-  {
-    id: "github",
-    icon: <GitHubIcon />,
-    iconClass: "text-foreground",
-    name: "GitHub",
-    description: "Pull projects and contributions automatically.",
-  },
-  {
-    id: "drive",
-    icon: <DriveIcon />,
-    iconClass: "text-foreground",
-    name: "Google Drive",
-    description: "Connect docs and portfolios.",
-  },
-  {
-    id: "cv",
-    icon: <UploadIcon />,
-    iconClass: "text-primary",
-    name: "Upload CV",
-    description: "Parse your existing CV instantly.",
-  },
-];
+const catalog = connectorsFallback();
 
-export const channels = [
-  {
-    id: "whatsapp",
-    icon: <WhatsAppIcon />,
-    iconClass: "text-foreground",
-    name: "WhatsApp",
-    description: "Get alerts and send commands via WhatsApp.",
-  },
-  {
-    id: "telegram",
-    icon: <TelegramIcon />,
-    iconClass: "text-foreground",
-    name: "Telegram",
-    description: "Chat with Kairos on Telegram.",
-  },
-  {
-    id: "slack",
-    icon: <SlackIcon />,
-    iconClass: "text-primary",
-    name: "Slack",
-    description: "Receive updates in your Slack workspace.",
-  },
-  {
-    id: "discord",
-    icon: <DiscordIcon />,
-    iconClass: "text-foreground",
-    name: "Discord",
-    description: "Get notifications via Discord DM.",
-  },
-  {
-    id: "email",
-    icon: <MailIcon />,
-    iconClass: "text-secondary",
-    name: "Email",
-    description: "Traditional email notifications.",
-  },
-];
+function hydrate(items: ReturnType<typeof connectorsFallback>["dataSources"]) {
+  return items.map((c) => ({
+    id: c.id,
+    name: c.name,
+    description: c.description,
+    icon: getConnectorIcon(c.id),
+    iconClass: getConnectorIconClass(c.id),
+  }));
+}
 
-export const comingSoonSources = [
-  { id: "linear", name: "Linear", description: "Sync issues and project context." },
-  { id: "jira", name: "Jira", description: "Connect sprint and ticket history." },
-];
+export const dataSources = hydrate(catalog.dataSources);
+export const channels = hydrate(catalog.channels);
+export const comingSoonSources = catalog.comingSoon.map((c) => ({
+  id: c.id,
+  name: c.name,
+  description: c.description,
+}));

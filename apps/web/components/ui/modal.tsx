@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { GlassPanel } from "./glass-panel";
 
 interface ModalProps {
   open: boolean;
@@ -33,36 +33,48 @@ export function Modal({
     };
   }, [open, onClose]);
 
-  if (!open) return null;
-
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <button
-        type="button"
-        className="absolute inset-0 bg-background/60 backdrop-blur-sm animate-fade-in"
-        aria-label="Close"
-        onClick={onClose}
-      />
-      <GlassPanel
-        padding="none"
-        className={cn("relative z-10 w-full max-w-lg animate-modal-enter", className)}
-      >
-        {(title || showClose) && (
-          <div className="flex items-center justify-between border-b border-border px-6 py-4">
-            {title && <h2 className="text-h3">{title}</h2>}
-            {showClose && (
-              <button
-                type="button"
-                onClick={onClose}
-                className="rounded-md p-1 text-muted-foreground hover:bg-muted hover:text-foreground"
-              >
-                <X className="h-5 w-5" />
-              </button>
+    <AnimatePresence>
+      {open ? (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <motion.button
+            type="button"
+            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+            aria-label="Close"
+            onClick={onClose}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
+          />
+          <motion.div
+            className={cn(
+              "relative z-10 w-full max-w-lg overflow-hidden rounded-[16px] border border-border bg-[var(--bg-elevated)] shadow-modal",
+              className
             )}
-          </div>
-        )}
-        <div className="p-6">{children}</div>
-      </GlassPanel>
-    </div>
+            initial={{ opacity: 0, scale: 0.98, y: 8 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.98, y: 8 }}
+            transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+          >
+            {(title || showClose) && (
+              <div className="flex items-center justify-between border-b border-border px-6 py-4">
+                {title && <h2 className="text-h3">{title}</h2>}
+                {showClose && (
+                  <button
+                    type="button"
+                    onClick={onClose}
+                    className="rounded-md p-1 text-muted-foreground transition-colors hover:bg-surface-hover hover:text-foreground"
+                  >
+                    <X className="h-5 w-5" />
+                  </button>
+                )}
+              </div>
+            )}
+            <div className="p-6">{children}</div>
+          </motion.div>
+        </div>
+      ) : null}
+    </AnimatePresence>
   );
 }

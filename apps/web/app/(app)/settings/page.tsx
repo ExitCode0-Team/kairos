@@ -1,39 +1,22 @@
 import { PageHeader } from "@/components/ui/page-header";
-import { GlassCard } from "@/components/ui/glass-card";
+import { Card } from "@/components/ui/card";
 import { SectionShell } from "@/components/ui/section-shell";
-import { Input } from "@/components/ui/input";
-import { Select } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
+import { AppearanceSettings } from "@/components/settings/appearance-settings";
+import { SettingsForm } from "@/components/settings/settings-form";
+import { getSettings } from "@/lib/api/resources";
 
-export default function SettingsPage() {
+export default async function SettingsPage() {
+  const settings = await getSettings();
+
   return (
     <>
       <PageHeader title="Settings" description="Manage your account and preferences." />
-      <GlassCard tier={3} padding="lg" className="mx-auto max-w-2xl space-y-8">
-        <SectionShell title="Profile" description="How you appear in Kairos.">
-          <div className="space-y-4">
-            <div>
-              <label className="mb-1.5 block text-label">Display name</label>
-              <Input defaultValue="Kairos User" />
-            </div>
-            <div>
-              <label className="mb-1.5 block text-label">Email</label>
-              <Input type="email" defaultValue="you@example.com" />
-            </div>
-          </div>
+      <Card className="mx-auto max-w-2xl space-y-8 p-8">
+        <SectionShell title="Appearance" description="Choose how Kairos looks.">
+          <AppearanceSettings />
         </SectionShell>
-        <SectionShell title="Notifications" description="Where your agent reaches you.">
-          <div>
-            <label className="mb-1.5 block text-label">Default channel</label>
-            <Select defaultValue="whatsapp">
-              <option value="whatsapp">WhatsApp</option>
-              <option value="email">Email</option>
-              <option value="slack">Slack</option>
-            </Select>
-          </div>
-        </SectionShell>
-        <Button>Save changes</Button>
-      </GlassCard>
+        <SettingsForm initial={settings} />
+      </Card>
     </>
   );
 }

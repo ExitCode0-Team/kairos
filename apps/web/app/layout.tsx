@@ -1,5 +1,6 @@
-import type { Metadata, Viewport } from "next";
+import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
+import { ThemeProvider } from "@/lib/design-system/theme-provider";
 import "./globals.css";
 
 const outfit = Outfit({
@@ -15,11 +16,6 @@ export const metadata: Metadata = {
     "The right moment, applied. Your AI-powered career companion that finds, matches, and applies to opportunities for you.",
 };
 
-export const viewport: Viewport = {
-  themeColor: "#FFFFFF",
-  colorScheme: "light",
-};
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -28,7 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={outfit.variable} suppressHydrationWarning>
       <body className="min-h-screen bg-background font-sans text-foreground antialiased">
-        {children}
+        <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
   );

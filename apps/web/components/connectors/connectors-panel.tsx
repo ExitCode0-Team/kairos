@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowRight, ExternalLink, X } from "lucide-react";
@@ -8,8 +8,14 @@ import { IconCloud } from "./icon-cloud";
 import { ConnectorRow } from "./connector-row";
 import { Button } from "@/components/ui/button";
 import { SearchInput } from "@/components/ui/search-input";
-import { GlassPanel } from "@/components/ui/glass-panel";
-import { channels, comingSoonSources, dataSources } from "@/lib/connectors/data";
+import { Card } from "@/components/ui/card";
+import { apiFetch } from "@/lib/api/client";
+import {
+  getConnectorIcon,
+  getConnectorIconClass,
+} from "@/components/connectors/icon-registry";
+import { comingSoonSources as comingSoonFallback } from "@/lib/connectors/data";
+import type { Connector, ConnectorStatus, ConnectorsCatalog } from "@/lib/api/types";
 
 interface ConnectorsPanelProps {
   continueHref?: string;
@@ -17,7 +23,15 @@ interface ConnectorsPanelProps {
   showClose?: boolean;
   closeHref?: string;
   onDismiss?: () => void;
+  catalog?: ConnectorsCatalog;
+  status?: ConnectorStatus;
 }
+
+const EMPTY_CATALOG: ConnectorsCatalog = {
+  dataSources: [],
+  channels: [],
+  comingSoon: [],
+};
 
 export function ConnectorsPanel({
   continueHref = "/dashboard",
@@ -25,39 +39,95 @@ export function ConnectorsPanel({
   showClose = false,
   closeHref = "/dashboard",
   onDismiss,
+  catalog: catalogProp,
+  status: statusProp,
 }: ConnectorsPanelProps) {
   const router = useRouter();
   const [search, setSearch] = useState("");
-  const [connectedSources, setConnectedSources] = useState<string[]>([]);
+  const [catalog, setCatalog] = useState<ConnectorsCatalog>(catalogProp ?? EMPTY_CATALOG);
+  const [connectedSources, setConnectedSources] = useState<string[]>(
+    statusProp?.connected ?? [],
+  );
+  const [activeChannel, setActiveChannel] = useState<string>(
+    statusProp?.activeChannel ?? "whatsapp",
+  );
   const [loadingSource, setLoadingSource] = useState<string | null>(null);
-  const [activeChannel, setActiveChannel] = useState("whatsapp");
   const [heroDismissed, setHeroDismissed] = useState(false);
+
+  useEffect(() => {
+    if (catalogProp || statusProp) return;
+    let cancelled = false;
+    (async () => {
+      const [c, s] = await Promise.all([
+        apiFetch<ConnectorsCatalog>("/api/connectors"),
+        apiFetch<ConnectorStatus>("/api/connectors/status"),
+      ]);
+      if (cancelled) return;
+      if (c.ok) setCatalog(c.data);
+      if (s.ok) {
+        setConnectedSources(s.data.connected);
+        setActiveChannel(s.data.activeChannel);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [catalogProp, statusProp]);
 
   const handleConnect = async (sourceId: string) => {
     setLoadingSource(sourceId);
-    await new Promise((r) => setTimeout(r, 1200));
-    setConnectedSources((prev) => [...prev, sourceId]);
+    const res = await apiFetch<{ connected: boolean }>(
+      `/api/connectors/${encodeURIComponent(sourceId)}/connect`,
+      { method: "POST" },
+    );
+    if (res.ok && res.data.connected) {
+      setConnectedSources((prev) =>
+        prev.includes(sourceId) ? prev : [...prev, sourceId],
+      );
+    }
     setLoadingSource(null);
   };
+
+  const handleSelectChannel = async (channelId: string) => {
+    const prev = activeChannel;
+    setActiveChannel(channelId);
+    const res = await apiFetch<{ activeChannel: string }>(
+      "/api/connectors/channel",
+      { method: "PUT", body: JSON.stringify({ channel: channelId }) },
+    );
+    if (!res.ok) {
+      setActiveChannel(prev);
+    }
+  };
+
+  const dataSources = catalog.dataSources;
+  const channels = catalog.channels;
+  const comingSoon =
+    catalog.comingSoon.length > 0
+      ? catalog.comingSoon
+      : comingSoonFallback.map<Connector>((c) => ({
+          ...c,
+          category: "coming_soon",
+        }));
 
   const filteredSources = useMemo(() => {
     const q = search.toLowerCase();
     if (!q) return dataSources;
     return dataSources.filter(
-      (s) => s.name.toLowerCase().includes(q) || s.description.toLowerCase().includes(q)
+      (s) => s.name.toLowerCase().includes(q) || s.description.toLowerCase().includes(q),
     );
-  }, [search]);
+  }, [search, dataSources]);
 
   const filteredChannels = useMemo(() => {
     const q = search.toLowerCase();
     if (!q) return channels;
     return channels.filter(
-      (c) => c.name.toLowerCase().includes(q) || c.description.toLowerCase().includes(q)
+      (c) => c.name.toLowerCase().includes(q) || c.description.toLowerCase().includes(q),
     );
-  }, [search]);
+  }, [search, channels]);
 
   return (
-    <GlassPanel padding="none" className="mx-auto w-full max-w-4xl overflow-hidden">
+    <Card padding="none" className="mx-auto w-full max-w-4xl overflow-hidden">
       <div className="flex items-center justify-between border-b border-border px-6 py-4">
         <h1 className="text-h2">Connectors</h1>
         <div className="flex items-center gap-3">
@@ -106,8 +176,8 @@ export function ConnectorsPanel({
             {filteredSources.map((source) => (
               <ConnectorRow
                 key={source.id}
-                icon={source.icon}
-                iconClass={source.iconClass}
+                icon={getConnectorIcon(source.id)}
+                iconClass={getConnectorIconClass(source.id)}
                 name={source.name}
                 description={source.description}
                 connected={connectedSources.includes(source.id)}
@@ -128,23 +198,23 @@ export function ConnectorsPanel({
             {filteredChannels.map((channel) => (
               <ConnectorRow
                 key={channel.id}
-                icon={channel.icon}
-                iconClass={channel.iconClass}
+                icon={getConnectorIcon(channel.id)}
+                iconClass={getConnectorIconClass(channel.id)}
                 name={channel.name}
                 description={channel.description}
                 active={activeChannel === channel.id}
-                onSelect={() => setActiveChannel(channel.id)}
+                onSelect={() => handleSelectChannel(channel.id)}
                 type="channel"
               />
             ))}
           </div>
         </section>
 
-        {comingSoonSources.length > 0 && (
+        {comingSoon.length > 0 && (
           <section>
             <h3 className="mb-4 text-label">Coming soon</h3>
             <div className="grid gap-3 sm:grid-cols-2">
-              {comingSoonSources.map((source) => (
+              {comingSoon.map((source) => (
                 <ConnectorRow
                   key={source.id}
                   icon={<span className="text-lg">◇</span>}
@@ -162,7 +232,7 @@ export function ConnectorsPanel({
           <ContinueFooter continueHref={continueHref} router={router} />
         )}
       </div>
-    </GlassPanel>
+    </Card>
   );
 }
 

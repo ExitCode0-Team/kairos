@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
-import { GlassCard } from "@/components/ui/glass-card";
+import { FlatDecor } from "@/components/marketing/flat-decor";
 
 function GoogleIcon() {
   return (
@@ -33,50 +33,72 @@ function MailIcon() {
 
 export default function LoginPage() {
   return (
-    <div className="void-bg relative flex min-h-screen items-center justify-center p-6">
-      <div className="signal-glow-blue left-1/2 top-1/3 -translate-x-1/2" />
-      <div className="relative z-10 w-full max-w-[420px]">
-        <div className="mb-8 flex justify-center">
-          <Link href="/">
-            <Logo />
-          </Link>
-        </div>
-        <GlassCard tier={3} padding="lg">
-          <h1 className="text-h2">Sign in</h1>
-          <p className="mt-2 text-sm text-muted-foreground">
-            The right moment, applied — continue to your career workspace.
+    <div className="flex min-h-screen">
+      <div className="relative hidden w-1/2 flex-col justify-between section-primary p-12 lg:flex">
+        <FlatDecor />
+        <Link href="/">
+          <Logo inverted />
+        </Link>
+        <div className="relative z-10">
+          <h1 className="text-4xl font-extrabold tracking-tight text-on-primary">
+            The right moment, applied.
+          </h1>
+          <p className="mt-4 max-w-md text-lg text-on-primary/80">
+            Your AI career agent finds matches, tailors applications, and keeps you in the loop.
           </p>
-          <div className="mt-8 space-y-3">
-            <Button variant="secondary" className="w-full justify-center" asChild>
-              <Link href="/onboarding">
-                <GoogleIcon />
-                Continue with Google
-              </Link>
-            </Button>
-            <Button variant="outline" className="w-full justify-center" asChild>
-              <Link href="/onboarding">
-                <AppleIcon />
-                Continue with Apple
-              </Link>
-            </Button>
-            <p className="py-2 text-center text-xs uppercase tracking-wider text-muted-foreground">
-              or
-            </p>
-            <Button variant="outline" className="w-full justify-center" asChild>
-              <Link href="/onboarding">
-                <MailIcon />
-                Continue with email
-              </Link>
-            </Button>
-          </div>
-        </GlassCard>
-        <p className="mt-6 text-center text-sm text-muted-foreground">
-          Don&apos;t have an account?{" "}
-          <Link href="/onboarding" className="font-semibold text-secondary hover:text-secondary-hover">
-            Get started
-          </Link>
-        </p>
+        </div>
+        <p className="relative z-10 text-sm text-on-primary/60">© Kairos</p>
+      </div>
+      <div className="flex flex-1 items-center justify-center bg-background p-6">
+        <div className="w-full max-w-[400px]">
+          <LoginForm />
+        </div>
       </div>
     </div>
+  );
+}
+
+function LoginForm() {
+  return (
+    <>
+      <div className="mb-8 lg:hidden">
+        <Link href="/">
+          <Logo />
+        </Link>
+      </div>
+      <div className="rounded-lg p-8">
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold tracking-tight">Sign in</h2>
+          <p className="mt-1 text-sm text-muted-foreground">Continue to your account</p>
+        </div>
+        <div className="space-y-3">
+          <Button variant="secondary" className="w-full justify-center" asChild>
+            <Link href="/onboarding">
+              <GoogleIcon />
+              Continue with Google
+            </Link>
+          </Button>
+          <Button variant="secondary" className="w-full justify-center" asChild>
+            <Link href="/onboarding">
+              <AppleIcon />
+              Continue with Apple
+            </Link>
+          </Button>
+          <p className="py-2 text-center text-xs uppercase tracking-wider text-muted-foreground">or</p>
+          <Button variant="secondary" className="w-full justify-center" asChild>
+            <Link href="/onboarding">
+              <MailIcon />
+              Continue with email
+            </Link>
+          </Button>
+        </div>
+      </div>
+      <p className="mt-6 text-center text-sm text-muted-foreground">
+        Don&apos;t have an account?{" "}
+        <Link href="/onboarding" className="font-semibold text-primary hover:text-primary-hover">
+          Get started
+        </Link>
+      </p>
+    </>
   );
 }
